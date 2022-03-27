@@ -1,0 +1,132 @@
+﻿<Window
+    x:Class="SBCore.Configurator.EditWindows.CmiuPlacesEditWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:localcommands="clr-namespace:SBCore.Configurator.Commands"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    Title="Отправка мест в ЦМИУ"
+    Width="1272"
+    Height="600"
+    x:ClassModifier="internal"
+    Closing="OnClosing"
+    mc:Ignorable="d">
+    <Window.CommandBindings>
+        <CommandBinding Command="ApplicationCommands.Close" Executed="CloseCommandExecuted" />
+        <CommandBinding
+            CanExecute="AddRowCanExecute"
+            Command="localcommands:CmiuPlacesCommands.AddRowCommand"
+            Executed="AddRowExecuted" />
+        <CommandBinding
+            CanExecute="RemoveRowCanExecute"
+            Command="localcommands:CmiuPlacesCommands.RemoveRowCommand"
+            Executed="RemoveRowExecuted" />
+    </Window.CommandBindings>
+    <Window.Resources>
+        <CollectionViewSource x:Key="CmiuPlacesDataSource" CollectionViewType="ListCollectionView" />
+        <ContextMenu x:Key="CmiuPlacesContextMenu">
+            <MenuItem Command="localcommands:CmiuPlacesCommands.AddRowCommand" Header="Добавить строку" />
+            <MenuItem Command="localcommands:CmiuPlacesCommands.RemoveRowCommand" Header="Удалить строку" />
+        </ContextMenu>
+    </Window.Resources>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition MaxHeight="25" />
+            <RowDefinition />
+        </Grid.RowDefinitions>
+        <Menu
+            Grid.Row="0"
+            Height="25"
+            VerticalAlignment="Top">
+            <MenuItem Header="Окно">
+                <MenuItem Command="ApplicationCommands.Close" Header="Закрыть" />
+            </MenuItem>
+        </Menu>
+        <Grid Grid.Row="1">
+            <DockPanel>
+                <StatusBar DockPanel.Dock="Bottom">
+                    <StatusBarItem>
+                        <TextBlock Name="StatusBlock" />
+                    </StatusBarItem>
+                </StatusBar>
+                <GroupBox Margin="3" Header="_CMIUGW_PLACES">
+                    <DataGrid
+                        Name="CmiuPlacesGrid"
+                        BeginningEdit="GridBeginningEdit"
+                        ColumnHeaderStyle="{DynamicResource DataGridHeaderDefaultStyle}"
+                        CommandManager.PreviewCanExecute="PreviewCanExecute"
+                        ContextMenu="{StaticResource CmiuPlacesContextMenu}"
+                        DataContext="{StaticResource CmiuPlacesDataSource}"
+                        InitializingNewItem="GridInitializingNewItem"
+                        ItemsSource="{Binding}"
+                        MouseDown="OnMouseDown"
+                        Style="{DynamicResource DataGridDefaultStyle}">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn
+                                x:Name="Id"
+                                Width="30"
+                                Binding="{Binding Id, Mode=OneWay}"
+                                Header="Id"
+                                IsReadOnly="True" />
+                            <DataGridTextColumn
+                                x:Name="CmiuParkingNumber"
+                                Width="120"
+                                Binding="{Binding CmiuParkingNumber}"
+                                Header="Номер парковки ЦМИУ" />
+
+                            <DataGridTextColumn
+                                x:Name="TotalFree"
+                                Width="120"
+                                Binding="{Binding TotalFree}"
+                                Header="Всего свободно" />
+                            <DataGridTextColumn
+                                x:Name="TotalBusy"
+                                Width="120"
+                                Binding="{Binding TotalBusy}"
+                                Header="Всего занято" />
+
+                            <DataGridTextColumn
+                                x:Name="ClientFree"
+                                Width="120"
+                                Binding="{Binding ClientFree}"
+                                Header="Клиентских свободно" />
+                            <DataGridTextColumn
+                                x:Name="ClientBusy"
+                                Width="120"
+                                Binding="{Binding ClientBusy}"
+                                Header="Клиентских занято" />
+
+                            <DataGridTextColumn
+                                x:Name="ReservedFree"
+                                Width="120"
+                                Binding="{Binding ReservedFree}"
+                                Header="Резервированных свободно" />
+                            <DataGridTextColumn
+                                x:Name="ReservedBusy"
+                                Width="120"
+                                Binding="{Binding ReservedBusy}"
+                                Header="Резервированных занято" />
+
+                            <DataGridTextColumn
+                                x:Name="InvalidFree"
+                                Width="120"
+                                Binding="{Binding InvalidFree}"
+                                Header="Инвалидных свободно" />
+                            <DataGridTextColumn
+                                x:Name="InvalidBusy"
+                                Width="120"
+                                Binding="{Binding InvalidBusy}"
+                                Header="Инвалидных занято" />
+
+                            <DataGridTextColumn
+                                x:Name="ActionTime"
+                                Width="120"
+                                Binding="{Binding ActionTime, StringFormat=G}"
+                                Header="Дата события" />
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </GroupBox>
+            </DockPanel>
+        </Grid>
+    </Grid>
+</Window>

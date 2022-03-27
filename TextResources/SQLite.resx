@@ -1,0 +1,553 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="SqlCreate_ADMIN" xml:space="preserve">
+    <value>CREATE TABLE "ADMIN" (
+	"Id"	TEXT NOT NULL,
+	"Auth"	TEXT NOT NULL,
+	"Expire"	TEXT NOT NULL,
+	CONSTRAINT "PK_ADMIN" PRIMARY KEY("Id")
+)</value>
+  </data>
+  <data name="SqlCreate_AIS_LOG" xml:space="preserve">
+    <value>CREATE TABLE "AIS_LOG" (
+	"Id"	TEXT NOT NULL,
+	"Parking"	INTEGER NOT NULL,
+	"SessionId"	TEXT NOT NULL,
+	"Operation"	INTEGER NOT NULL,
+	"Card"	TEXT NOT NULL,
+	"OperationNumber"	INTEGER NOT NULL,
+	"Data"	TEXT,
+	"LPR"	TEXT,
+	"StartTime"	TEXT,
+	"StopTime"	TEXT,
+	"FineCost"	TEXT,
+	"FinePaid"	TEXT,
+	"AutoType"	INTEGER,
+	"SessionType"	INTEGER,
+	"SubscriptionTicket"	TEXT,
+	"Paid"	TEXT,
+	"ExternalReference"	TEXT,
+	"AnticipatedStopTime"	TEXT,
+	"PaymentTime"	TEXT,
+	"PaymentType"	INTEGER,
+	"RRN"	TEXT,
+	"NotDeliveredSum"	TEXT,
+	"NotDeliveredSumType"	TEXT,
+	"Exemption"	INTEGER,
+	"ExemptionType"	INTEGER,
+	"DeliveryStatus"	INTEGER NOT NULL,
+	"DeliveryTime"	TEXT,
+	"DeliverAttempt"	INTEGER NOT NULL,
+	"TransactionUid"	TEXT NOT NULL,
+	CONSTRAINT "PK_AIS_LOG" PRIMARY KEY("Id")
+)</value>
+  </data>
+  <data name="SqlCreate_AIS_REPLACEMENT" xml:space="preserve">
+    <value>CREATE TABLE "AIS_REPLACEMENT" (
+	"Id"	TEXT NOT NULL,
+	"NewCard"	TEXT NOT NULL,
+	"ReplacedCard"	TEXT NOT NULL,
+	"ProductionDate"	TEXT NOT NULL,
+	CONSTRAINT "PK_AIS_REPLACEMENT" PRIMARY KEY("Id")
+)</value>
+  </data>
+  <data name="SqlCreate_CAMERA_MAP" xml:space="preserve">
+    <value>CREATE TABLE "CAMERA_MAP" (
+	"Id"	TEXT NOT NULL,
+	"Cameratype"	TEXT NOT NULL,
+	"CameraUri"	TEXT NOT NULL,
+	"Auth"	TEXT,
+	"Compression"	INTEGER,
+	"Resolution"	TEXT,
+	"Delay"	TEXT,
+	"Timeout"	TEXT,
+	CONSTRAINT "PK_CAMERA_MAP" PRIMARY KEY("Id")
+);</value>
+  </data>
+  <data name="SqlCreate_CMIUGW_AISSESSION_DELIVERY_STATUS" xml:space="preserve">
+    <value>CREATE TABLE "CMIUGW_AISSESSION_DELIVERY_STATUS" (
+	"Id"	TEXT NOT NULL,
+	"SessionId"	TEXT NOT NULL,
+	"CmiuParkingNumber"	INTEGER NOT NULL,
+	"Card"	TEXT NOT NULL,
+	"DeliveryStatus"	INTEGER,
+	"DeliveryTime"	TEXT,
+	"TransactionUid"	TEXT NOT NULL,
+	CONSTRAINT "PK_CMIUGW_AISSESSION_DELIVERY_STATUS" PRIMARY KEY("Id")
+)</value>
+  </data>
+  <data name="SqlCreate_CMIUGW_CASHSTATUS" xml:space="preserve">
+    <value>CREATE TABLE "CMIUGW_CASHSTATUS" (
+	"Id"	TEXT NOT NULL,
+	"CmiuDeviceNumber"	INTEGER NOT NULL,
+	"CmiuDeviceType"	INTEGER NOT NULL,
+	"MoneyValue"	INTEGER NOT NULL,
+	"Quantity"	INTEGER NOT NULL,
+	"CmiuMoneyType"	INTEGER NOT NULL,
+	"CmiuMoneyMethodType"	INTEGER NOT NULL,
+	"DateEvent"	TEXT NOT NULL,
+	CONSTRAINT "PK_CMIUGW_CASHSTATUS" PRIMARY KEY("Id")
+)</value>
+  </data>
+  <data name="SqlCreate_CMIUGW_CONFIG" xml:space="preserve">
+    <value>CREATE TABLE "CMIUGW_CONFIG" (
+    "Id" TEXT NOT NULL CONSTRAINT "PK_CMIUGW_DEVICE_MAP" PRIMARY KEY,
+    "Parameter" TEXT NOT NULL,
+    "Value" TEXT NULL
+)</value>
+  </data>
+  <data name="SqlCreate_CMIUGW_DEVICE_MAP" xml:space="preserve">
+    <value>CREATE TABLE "CMIUGW_DEVICE_MAP" (
+	"Id"	TEXT NOT NULL,
+	"CmiuDeviceNumber"	INTEGER NOT NULL,
+	"CmiuDeviceType"	INTEGER NOT NULL,
+	"DeviceIP"	TEXT NOT NULL,
+	"Protocol"	TEXT,
+	"Port"	INTEGER,
+	"DeviceAuth"	TEXT,
+	"Prompt"	TEXT,
+	"Reboot"	TEXT,
+	"CellComputerNumber"	INTEGER NOT NULL,
+	"FacilityNumber"	INTEGER NOT NULL,
+	"FieldDeviceNumber"	INTEGER NOT NULL,
+	CONSTRAINT "PK_CMIUGW_DEVICE_MAP" PRIMARY KEY("Id")
+)</value>
+  </data>
+  <data name="SqlCreate_CMIUGW_EVENTS" xml:space="preserve">
+    <value>CREATE TABLE "CMIUGW_EVENTS" (
+	"Id"	TEXT NOT NULL,
+	"CmiuStatusNumber"	INTEGER NOT NULL,
+	"CmiuEventText"	TEXT,
+	"CmiuDeviceNumber"	INTEGER NOT NULL,
+	"CmiuDeviceType"	INTEGER NOT NULL,
+	"ActionUid"	TEXT NOT NULL,
+	"TransactionUid"	TEXT NOT NULL,
+	"DateEvent"	TEXT NOT NULL,
+	CONSTRAINT "PK_CMIUGW_EVENTS" PRIMARY KEY("Id")
+)</value>
+  </data>
+  <data name="SqlCreate_CMIUGW_IMAGES" xml:space="preserve">
+    <value>CREATE TABLE "CMIUGW_IMAGES" (
+    "Id" TEXT NOT NULL CONSTRAINT "PK_CMIUGW_IMAGES" PRIMARY KEY,
+    "Headers" TEXT NULL,
+    "Data" BLOB NULL
+)</value>
+  </data>
+  <data name="SqlCreate_CMIUGW_ISSIMAGES" xml:space="preserve">
+    <value>CREATE TABLE "CMIUGW_ISSIMAGES" (
+	"Id"	TEXT NOT NULL,
+	"CmiuParkingNumber"	INTEGER NOT NULL,
+	"CmiuCameraNumber"	INTEGER NOT NULL,
+	"IssCameraNumber"	INTEGER NOT NULL,
+	"DateEvent"	TEXT NOT NULL,
+	"HasLprRectangle"	INTEGER NOT NULL,
+	"RectangleX"	REAL NOT NULL,
+	"RectangleY"	REAL NOT NULL,
+	"RectangleWidth"	REAL NOT NULL,
+	"RectangleHeight"	REAL NOT NULL,
+	"ActionUid"	TEXT NOT NULL,
+	"TransactionUid"	TEXT NOT NULL,
+	CONSTRAINT "PK_CMIUGW_ISSIMAGES" PRIMARY KEY("Id")
+);</value>
+  </data>
+  <data name="SqlCreate_CMIUGW_LEVELS" xml:space="preserve">
+    <value>CREATE TABLE "CMIUGW_LEVELS" (
+	"Id"	TEXT NOT NULL,
+	"CmiuParkingNumber"	INTEGER NOT NULL,
+	"CmiuLevelNumber"	INTEGER NOT NULL,
+	"Free"	INTEGER NOT NULL,
+	"Busy"	INTEGER NOT NULL,
+	"ActionTime"	TEXT NOT NULL,
+	CONSTRAINT "PK_CMIUGW_LEVELS" PRIMARY KEY("Id")
+)</value>
+  </data>
+  <data name="SqlCreate_CMIUGW_LPR" xml:space="preserve">
+    <value>CREATE TABLE "CMIUGW_LPR" (
+	"Id"	TEXT NOT NULL,
+	"LprNumber"	TEXT NOT NULL,
+	"DateEvent"	TEXT NOT NULL,
+	"CmiuDeviceNumber"	INTEGER NOT NULL,
+	"CmiuCameraNumber"	INTEGER NOT NULL,
+	"Traffic"	INTEGER NOT NULL,
+	"RecognitionAccuracy"	TEXT,
+	"Speed"	TEXT,
+	"ColorId"	INTEGER,
+	"CountryId"	TEXT,
+	"Direction"	INTEGER,
+	"ActionUid"	TEXT NOT NULL,
+	"TransactionUid"	TEXT NOT NULL,
+	CONSTRAINT "PK_CMIUGW_LPR" PRIMARY KEY("Id")
+)</value>
+  </data>
+  <data name="SqlCreate_CMIUGW_MOVEMENTS" xml:space="preserve">
+    <value>CREATE TABLE "CMIUGW_MOVEMENTS" (
+	"Id"	TEXT NOT NULL,
+	"MovementType"	INTEGER NOT NULL,
+	"CmiuDeviceNumber"	INTEGER NOT NULL,
+	"CmiuDeviceType"	INTEGER NOT NULL,
+	"CmiuTransactionType"	INTEGER NOT NULL,
+	"Card"	TEXT NOT NULL,
+	"CmiuCardType"	INTEGER NOT NULL,
+	"LPR"	TEXT,
+	"ActionUid"	TEXT NOT NULL,
+	"TransactionUid"	TEXT NOT NULL,
+	"DateEvent"	TEXT NOT NULL,
+	"EppSession"	INTEGER NOT NULL,
+	"SessionId"	TEXT,
+	"Operation"	INTEGER,
+	"AisSessionType"	INTEGER,
+	"AisAutoType"	INTEGER,
+	"FineCost"	TEXT,
+	"FinePaid"	TEXT,
+	CONSTRAINT "PK_CMIUGW_MOVEMENTS" PRIMARY KEY("Id")
+)</value>
+  </data>
+  <data name="SqlCreate_CMIUGW_PARKING_LEVEL_MAP" xml:space="preserve">
+    <value>CREATE TABLE "CMIUGW_PARKING_LEVEL_MAP" (
+	"Id"	TEXT NOT NULL,
+	"CmiuParkingNumber"	INTEGER NOT NULL,
+	"CmiuLevelNumber"	INTEGER NOT NULL,
+	"CounterNumber"	INTEGER NOT NULL,
+	CONSTRAINT "PK_CMIUGW_PARKING_LEVEL_MAP" PRIMARY KEY("Id")
+)</value>
+  </data>
+  <data name="SqlCreate_CMIUGW_PAYMENTS" xml:space="preserve">
+    <value>CREATE TABLE "CMIUGW_PAYMENTS" (
+	"Id"	TEXT NOT NULL,
+	"CmiuDeviceNumber"	INTEGER NOT NULL,
+	"CmiuDeviceType"	INTEGER NOT NULL,
+	"CmiuPaymentMethod"	INTEGER NOT NULL,
+	"PaymentMethodAddition"	TEXT,
+	"Card"	TEXT NOT NULL,
+	"CmiuCardType"	INTEGER NOT NULL,
+	"CmiuPaymentType"	INTEGER NOT NULL,
+	"CmiuPaymentCount"	INTEGER NOT NULL,
+	"Price"	INTEGER NOT NULL,
+	"ActionUid"	TEXT NOT NULL,
+	"TransactionUid"	TEXT NOT NULL,
+	"DateEvent"	TEXT NOT NULL,
+	"EppSession"	INTEGER NOT NULL,
+	"SessionId"	TEXT,
+	"Operation"	INTEGER,
+	"AisSessionType"	INTEGER,
+	"AisAutoType"	INTEGER,
+	"AisPaymentType"	INTEGER,
+	"AisExemptionType"	INTEGER,
+	"FineCost"	TEXT,
+	"FinePaid"	TEXT,
+	CONSTRAINT "PK_CMIUGW_PAYMENTS" PRIMARY KEY("Id")
+)</value>
+  </data>
+  <data name="SqlCreate_CMIUGW_PLACES" xml:space="preserve">
+    <value>CREATE TABLE "CMIUGW_PLACES" (
+	"Id"	TEXT NOT NULL,
+	"CmiuParkingNumber"	INTEGER NOT NULL,
+	"TotalFree"	INTEGER NOT NULL,
+	"TotalBusy"	INTEGER NOT NULL,
+	"ClientFree"	INTEGER NOT NULL,
+	"ClientBusy"	INTEGER NOT NULL,
+	"ReservedFree"	INTEGER NOT NULL,
+	"ReservedBusy"	INTEGER NOT NULL,
+	"InvalidFree"	INTEGER NOT NULL,
+	"InvalidBusy"	INTEGER NOT NULL,
+	"ActionTime"	TEXT NOT NULL,
+	CONSTRAINT "PK_CMIUGW_PLACES" PRIMARY KEY("Id")
+)</value>
+  </data>
+  <data name="SqlCreate_CMIUGW_PLACES_URLS_MAP" xml:space="preserve">
+    <value>CREATE TABLE "CMIUGW_PLACES_URLS_MAP" (
+	"Id"	TEXT NOT NULL,
+	"CmiuParkingNumber"	INTEGER NOT NULL,
+	"Url"	TEXT NOT NULL,
+	"Protocol"	TEXT NOT NULL,
+	CONSTRAINT "PK_CMIUGW_PLACES_URLS_MAP" PRIMARY KEY("Id")
+)</value>
+  </data>
+  <data name="SqlCreate_DEVICE_CMIU_CAMERA_MAP" xml:space="preserve">
+    <value>CREATE TABLE "DEVICE_CMIU_CAMERA_MAP" (
+	"Id"	TEXT NOT NULL,
+	"CameraId"	TEXT,
+	"DeviceId"	TEXT NOT NULL,
+	"CmiuCameraId"	INTEGER NOT NULL,
+	"IssArchiveCameraId"	INTEGER,
+	"UsePfr"	INTEGER,
+	CONSTRAINT "PK_DEVICE_CMIU_CAMERA_MAP" PRIMARY KEY("Id"),
+	CONSTRAINT "FK_DEVICE_CMIU_CAMERA_MAP_CAMERA_MAP_CameraId" FOREIGN KEY("CameraId") REFERENCES "CAMERA_MAP"("Id") ON DELETE CASCADE,
+	CONSTRAINT "FK_DEVICE_CMIU_CAMERA_MAP_CMIUGW_DEVICE_MAP_DeviceId" FOREIGN KEY("DeviceId") REFERENCES "CMIUGW_DEVICE_MAP"("Id") ON DELETE CASCADE
+);</value>
+  </data>
+  <data name="SqlCreate_EVENT_CAMERA_MAP" xml:space="preserve">
+    <value>CREATE TABLE "EVENT_CAMERA_MAP" (
+	"Id"	TEXT NOT NULL,
+	"DeviceCmiuCameraId"	TEXT NOT NULL,
+	"EventId"	INTEGER NOT NULL,
+	CONSTRAINT "FK_EVENT_CAMERA_MAP_DEVICE_CMIU_CAMERA_MAP_DeviceCmiuCameraId" FOREIGN KEY("DeviceCmiuCameraId") REFERENCES "DEVICE_CMIU_CAMERA_MAP"("Id") ON DELETE CASCADE,
+	CONSTRAINT "PK_EVENT_CAMERA_MAP" PRIMARY KEY("Id")
+);</value>
+  </data>
+  <data name="SqlCreate_EXEMPTION_JOBS" xml:space="preserve">
+    <value>CREATE TABLE "EXEMPTION_JOBS" (
+	"Id"	TEXT NOT NULL,
+	"JobId"	INTEGER NOT NULL,
+	"JobType"	INTEGER NOT NULL,
+	"FacilityNumber"	INTEGER NOT NULL,
+	"ComputerNumber"	INTEGER NOT NULL,
+	"OperatorNumber"	INTEGER NOT NULL,
+	"DeviceType"	INTEGER,
+	"DeviceNumber"	INTEGER NOT NULL,
+	"ProviderId"	INTEGER NOT NULL,
+	"MediaType"	INTEGER,
+	"MediaName10"	TEXT,
+	"MediaName16"	TEXT,
+	"EPAN"	TEXT,
+	"Troyka"	TEXT,
+	"EntryTime"	TEXT,
+	"LeaveLoopIn"	INTEGER,
+	"LeaveLoopOut"	INTEGER,
+	"OriginalAmount"	REAL,
+	"RemainingAmount"	REAL,
+	"LPR"	TEXT,
+	"ExemptionTime"	TEXT,
+	"ExemptionResult"	INTEGER,
+	"ExemptionComment"	TEXT,
+	"TransactionTimeStamp"	TEXT NOT NULL,
+	"JobStatus"	INTEGER NOT NULL,
+	"JobStatusTimeStamp"	TEXT NOT NULL,
+	CONSTRAINT "AK_EXEMPTION_JOBS_JobId" UNIQUE("JobId"),
+	CONSTRAINT "PK_EXEMPTION_JOBS" PRIMARY KEY("Id")
+)</value>
+  </data>
+  <data name="SqlCreate_EXEMPTION_LOG" xml:space="preserve">
+    <value>CREATE TABLE "EXEMPTION_LOG" (
+	"Id"	TEXT NOT NULL,
+	"Card"	TEXT NOT NULL,
+	"EntryTime"	TEXT NOT NULL,
+	"EntryDevice"	INTEGER NOT NULL,
+	"FacilityId"	INTEGER NOT NULL,
+	"ParkingId"	INTEGER NOT NULL,
+	"Session"	TEXT NOT NULL,
+	"LPR"	TEXT,
+	"MetroCardId"	TEXT NOT NULL,
+	"ExemptionTime"	TEXT,
+	"ExemptionResult"	INTEGER NOT NULL,
+	"ExemptionComment"	TEXT,
+	CONSTRAINT "PK_EXEMPTION_LOG" PRIMARY KEY("Id")
+)</value>
+  </data>
+  <data name="SqlCreate_EXEMPTION_PARKING" xml:space="preserve">
+    <value>CREATE TABLE "EXEMPTION_PARKING" (
+	"Id"	TEXT NOT NULL,
+	"FacilityId"	INTEGER NOT NULL,
+	"ComputerNumber"	INTEGER NOT NULL,
+	"MetroParkingId"	INTEGER NOT NULL,
+	CONSTRAINT "PK_EXEMPTION_PARKING" PRIMARY KEY("Id")
+)</value>
+  </data>
+  <data name="SqlCreate_EXEMPTION_PROVIDERS" xml:space="preserve">
+    <value>CREATE TABLE "EXEMPTION_PROVIDERS" (
+	"Id"	TEXT NOT NULL,
+	"ProviderId"	INTEGER NOT NULL,
+	"ProviderName"	TEXT,
+	CONSTRAINT "PK_EXEMPTION_PROVIDERS" PRIMARY KEY("Id")
+)</value>
+  </data>
+  <data name="SqlCreate_IX_AIS_LOG_Card" xml:space="preserve">
+    <value>CREATE INDEX "IX_AIS_LOG_Card" ON "AIS_LOG" ("Card")</value>
+  </data>
+  <data name="SqlCreate_IX_AIS_LOG_OperationNumber" xml:space="preserve">
+    <value>CREATE INDEX "IX_AIS_LOG_OperationNumber" ON "AIS_LOG" ("OperationNumber")</value>
+  </data>
+  <data name="SqlCreate_IX_AIS_LOG_SessionId" xml:space="preserve">
+    <value>CREATE INDEX "IX_AIS_LOG_SessionId" ON "AIS_LOG" ("SessionId")</value>
+  </data>
+  <data name="SqlCreate_IX_AIS_LOG_StartTime" xml:space="preserve">
+    <value>CREATE INDEX "IX_AIS_LOG_StartTime" ON "AIS_LOG" ("StartTime")</value>
+  </data>
+  <data name="SqlCreate_IX_AIS_REPLACEMENT_ReplacedCard" xml:space="preserve">
+    <value>CREATE INDEX "IX_AIS_REPLACEMENT_ReplacedCard" ON "AIS_REPLACEMENT" ("ReplacedCard")</value>
+  </data>
+  <data name="SqlCreate_IX_DEVICE_CMIU_CAMERA_MAP_CameraId" xml:space="preserve">
+    <value>CREATE INDEX "IX_DEVICE_CMIU_CAMERA_MAP_CameraId" ON "DEVICE_CMIU_CAMERA_MAP" (
+	"CameraId"
+)</value>
+  </data>
+  <data name="SqlCreate_IX_DEVICE_CMIU_CAMERA_MAP_DeviceId" xml:space="preserve">
+    <value>CREATE INDEX "IX_DEVICE_CMIU_CAMERA_MAP_DeviceId" ON "DEVICE_CMIU_CAMERA_MAP" (
+	"DeviceId"
+)</value>
+  </data>
+  <data name="SqlCreate_IX_EVENT_CAMERA_MAP_DeviceCmiuCameraId" xml:space="preserve">
+    <value>CREATE INDEX "IX_EVENT_CAMERA_MAP_DeviceCmiuCameraId" ON "EVENT_CAMERA_MAP" (
+	"DeviceCmiuCameraId"
+)</value>
+  </data>
+  <data name="SqlCreate_IX_EXEMPTION_JOBS_EntryTime" xml:space="preserve">
+    <value>CREATE INDEX "IX_EXEMPTION_JOBS_EntryTime" ON "EXEMPTION_JOBS" ("EntryTime")</value>
+  </data>
+  <data name="SqlCreate_IX_EXEMPTION_LOG_EntryTime" xml:space="preserve">
+    <value>CREATE INDEX "IX_EXEMPTION_LOG_EntryTime" ON "EXEMPTION_LOG" ("EntryTime")</value>
+  </data>
+  <data name="SqlCreate_IX_LPR_ISS_EVENT_MAP_DeviceCmiuCameraId" xml:space="preserve">
+    <value>CREATE INDEX "IX_LPR_ISS_EVENT_MAP_DeviceCmiuCameraId" ON "LPR_ISS_EVENT_MAP" (
+	"DeviceCmiuCameraId"
+)</value>
+  </data>
+  <data name="SqlCreate_LPR_ISS_EVENT_MAP" xml:space="preserve">
+    <value>CREATE TABLE "LPR_ISS_EVENT_MAP" (
+	"Id"	TEXT NOT NULL,
+	"DeviceCmiuCameraId"	TEXT NOT NULL,
+	"IssArchiveCameraId"	INTEGER NOT NULL,
+	"IssLprRecognizerId"	INTEGER NOT NULL,
+	CONSTRAINT "FK_LPR_ISS_EVENT_MAP_DEVICE_CMIU_CAMERA_MAP_DeviceCmiuCameraId" FOREIGN KEY("DeviceCmiuCameraId") REFERENCES "DEVICE_CMIU_CAMERA_MAP"("Id") ON DELETE CASCADE,
+	CONSTRAINT "PK_LPR_ISS_EVENT_MAP" PRIMARY KEY("Id")
+)</value>
+  </data>
+  <data name="SqlCreate_PARKING_MAP" xml:space="preserve">
+    <value>CREATE TABLE "PARKING_MAP" (
+	"Id"	TEXT NOT NULL,
+	"CmiuParkingNumber"	INTEGER NOT NULL,
+	"CellComputerNumber"	INTEGER NOT NULL,
+	"FacilityNumber"	INTEGER NOT NULL,
+	"Protocol"	TEXT NOT NULL,
+	"ParkId"	INTEGER NOT NULL,
+	"FrontId"	INTEGER NOT NULL,
+	"Address"	TEXT,
+	CONSTRAINT "PK_PARKING_MAP" PRIMARY KEY("Id")
+);</value>
+  </data>
+  <data name="SqlDropTable" xml:space="preserve">
+    <value>DROP TABLE {0}</value>
+  </data>
+  <data name="SqlRecordCount" xml:space="preserve">
+    <value>SELECT COUNT(*) FROM {0}</value>
+  </data>
+  <data name="SqlSelectIndices" xml:space="preserve">
+    <value>SELECT * FROM sqlite_master WHERE type='index';</value>
+  </data>
+  <data name="SqlTableExist" xml:space="preserve">
+    <value>SELECT COUNT(*) FROM sqlite_master WHERE type = 'table' AND name = :tablename</value>
+  </data>
+  <data name="SqlTableScheme" xml:space="preserve">
+    <value>SELECT * FROM {0} WHERE 0=1</value>
+  </data>
+  <data name="SqlTruncateTable" xml:space="preserve">
+    <value>DELETE FROM {0}</value>
+  </data>
+</root>

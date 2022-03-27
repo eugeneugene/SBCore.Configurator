@@ -1,0 +1,118 @@
+﻿<Window
+    x:Class="SBCore.Configurator.EditWindows.ParkingEditWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:localcommands="clr-namespace:SBCore.Configurator.Commands"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:sharedtypescmiu="clr-namespace:Shared.Types.CMIU;assembly=Shared"
+    Title="Карты парковок"
+    Width="1012"
+    Height="450"
+    x:ClassModifier="internal"
+    Closing="OnClosing"
+    mc:Ignorable="d">
+    <Window.CommandBindings>
+        <CommandBinding Command="ApplicationCommands.Close" Executed="CloseCommandExecuted" />
+        <CommandBinding
+            CanExecute="AddRowCanExecute"
+            Command="localcommands:ParkingCommands.AddRowCommand"
+            Executed="AddRowExecuted" />
+        <CommandBinding
+            CanExecute="RemoveRowCanExecute"
+            Command="localcommands:ParkingCommands.RemoveRowCommand"
+            Executed="RemoveRowExecuted" />
+    </Window.CommandBindings>
+    <Window.Resources>
+        <CollectionViewSource x:Key="ParkingDataSource" CollectionViewType="ListCollectionView" />
+        <ContextMenu x:Key="ParkingContextMenu">
+            <MenuItem Command="localcommands:ParkingCommands.AddRowCommand" Header="Добавить строку" />
+            <MenuItem Command="localcommands:ParkingCommands.RemoveRowCommand" Header="Удалить строку" />
+        </ContextMenu>
+        <ObjectDataProvider
+            x:Key="PlacesProtocolSmartEnum"
+            MethodName="GetValues"
+            ObjectType="{x:Type sharedtypescmiu:PlacesProtocol}" />
+    </Window.Resources>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition MaxHeight="25" />
+            <RowDefinition />
+        </Grid.RowDefinitions>
+        <Menu
+            Grid.Row="0"
+            Height="25"
+            VerticalAlignment="Top">
+            <MenuItem Header="Окно">
+                <MenuItem Command="ApplicationCommands.Close" Header="Закрыть" />
+            </MenuItem>
+        </Menu>
+        <Grid Grid.Row="1">
+            <DockPanel>
+                <StatusBar DockPanel.Dock="Bottom">
+                    <StatusBarItem>
+                        <TextBlock Name="StatusBlock" />
+                    </StatusBarItem>
+                </StatusBar>
+                <GroupBox Margin="3" Header="_PARKING_MAP">
+                    <DataGrid
+                        Name="ParkingMapGrid"
+                        BeginningEdit="GridBeginningEdit"
+                        ColumnHeaderStyle="{DynamicResource DataGridHeaderDefaultStyle}"
+                        CommandManager.PreviewCanExecute="PreviewCanExecute"
+                        ContextMenu="{StaticResource ParkingContextMenu}"
+                        DataContext="{StaticResource ParkingDataSource}"
+                        InitializingNewItem="GridInitializingNewItem"
+                        ItemsSource="{Binding}"
+                        MouseDown="OnMouseDown"
+                        Style="{DynamicResource DataGridDefaultStyle}">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn
+                                x:Name="Id"
+                                Width="30"
+                                Binding="{Binding Id, Mode=OneWay}"
+                                Header="Id"
+                                IsReadOnly="True" />
+                            <DataGridTextColumn
+                                x:Name="CmiuParkingNumber"
+                                Width="180"
+                                Binding="{Binding CmiuParkingNumber}"
+                                Header="Номер парковки в системе ЦМИУ" />
+                            <DataGridTextColumn
+                                x:Name="ParkId"
+                                Width="120"
+                                Binding="{Binding ParkId}"
+                                Header="Номер парковки АМПП" />
+                            <DataGridTextColumn
+                                x:Name="FacilityNumber"
+                                Width="120"
+                                Binding="{Binding FacilityNumber}"
+                                Header="Номер парковки Entervo" />
+                            <DataGridTextColumn
+                                x:Name="CellComputerNumber"
+                                Width="130"
+                                Binding="{Binding CellComputerNumber}"
+                                Header="Номер компьютера Entervo" />
+                            <DataGridTextColumn
+                                x:Name="FrontId"
+                                Width="120"
+                                Binding="{Binding FrontId}"
+                                Header="Номер парковки FrontId" />
+                            <DataGridTextColumn
+                                x:Name="Address"
+                                Width="120"
+                                Binding="{Binding Address}"
+                                Header="Адрес парковки" />
+                            <DataGridComboBoxColumn
+                                x:Name="PlacesProtocol"
+                                Width="150"
+                                Header="Протокол отправки"
+                                ItemsSource="{Binding Source={StaticResource PlacesProtocolSmartEnum}}"
+                                SelectedItemBinding="{Binding Protocol}" />
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </GroupBox>
+            </DockPanel>
+        </Grid>
+    </Grid>
+</Window>

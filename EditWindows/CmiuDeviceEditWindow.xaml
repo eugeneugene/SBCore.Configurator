@@ -1,0 +1,177 @@
+﻿<Window
+    x:Class="SBCore.Configurator.EditWindows.CmiuDeviceEditWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:core="clr-namespace:System;assembly=mscorlib"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:localcode="clr-namespace:SBCore.Configurator.Code"
+    xmlns:localcommands="clr-namespace:SBCore.Configurator.Commands"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:sharedtypescmiu="clr-namespace:Shared.Types.CMIU;assembly=Shared"
+    Title="Карта устройств ЦМИУ"
+    Width="1180"
+    Height="450"
+    x:ClassModifier="internal"
+    Closing="OnClosing"
+    mc:Ignorable="d">
+    <Window.CommandBindings>
+        <CommandBinding Command="ApplicationCommands.Close" Executed="CloseCommandExecuted" />
+        <CommandBinding
+            CanExecute="AddRowCanExecute"
+            Command="localcommands:CmiuDeviceCommands.AddRowCommand"
+            Executed="AddRowExecuted" />
+        <CommandBinding
+            CanExecute="RemoveRowCanExecute"
+            Command="localcommands:CmiuDeviceCommands.RemoveRowCommand"
+            Executed="RemoveRowExecuted" />
+        <CommandBinding
+            CanExecute="PingCanExecute"
+            Command="localcommands:CmiuDeviceCommands.PingCommand"
+            Executed="PingExecuted" />
+        <CommandBinding
+            CanExecute="VersionCanExecute"
+            Command="localcommands:CmiuDeviceCommands.VersionCommand"
+            Executed="VersionExecuted" />
+        <CommandBinding
+            CanExecute="CashCanExecute"
+            Command="localcommands:CmiuDeviceCommands.CashCommand"
+            Executed="CashExecuted" />
+        <CommandBinding
+            CanExecute="RebootCanExecute"
+            Command="localcommands:CmiuDeviceCommands.RebootCommand"
+            Executed="RebootExecuted" />
+        <CommandBinding
+            CanExecute="AuthHelperCanExecute"
+            Command="localcommands:CmiuDeviceCommands.AuthHelperCommand"
+            Executed="AuthHelperExecuted" />
+    </Window.CommandBindings>
+    <Window.Resources>
+        <ContextMenu x:Key="DeviceMapContextMenu">
+            <MenuItem Command="localcommands:CmiuDeviceCommands.AddRowCommand" Header="Добавить строку" />
+            <MenuItem Command="localcommands:CmiuDeviceCommands.RemoveRowCommand" Header="Удалить строку" />
+            <Separator />
+            <MenuItem Command="localcommands:CmiuDeviceCommands.PingCommand" Header="Ping" />
+            <MenuItem Command="localcommands:CmiuDeviceCommands.VersionCommand" Header="Version" />
+            <MenuItem Command="localcommands:CmiuDeviceCommands.CashCommand" Header="Cash" />
+            <MenuItem Command="localcommands:CmiuDeviceCommands.RebootCommand" Header="Reboot" />
+            <MenuItem Command="localcommands:CmiuDeviceCommands.AuthHelperCommand" Header="AuthHelper" />
+        </ContextMenu>
+        <CollectionViewSource x:Key="CmiuDeviceDataSource" CollectionViewType="ListCollectionView" />
+        <ObjectDataProvider
+            x:Key="CmiuDeviceTypeEnum"
+            MethodName="GetValues"
+            ObjectType="{x:Type core:Enum}">
+            <ObjectDataProvider.MethodParameters>
+                <x:Type Type="sharedtypescmiu:CmiuDeviceType" />
+            </ObjectDataProvider.MethodParameters>
+        </ObjectDataProvider>
+        <localcode:AuthConverter x:Key="AuthConverter" />
+        <localcode:AuthDecorationConverter x:Key="AuthDecorationConverter" />
+        <Style x:Key="AuthStyle" TargetType="TextBlock">
+            <Setter Property="TextDecorations" Value="{Binding RelativeSource={RelativeSource Self}, Path=Text, Converter={StaticResource AuthDecorationConverter}}" />
+            <Setter Property="ToolTip" Value="{Binding RelativeSource={RelativeSource Self}, Path=Text, Converter={StaticResource AuthConverter}}" />
+        </Style>
+    </Window.Resources>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition MaxHeight="25" />
+            <RowDefinition />
+        </Grid.RowDefinitions>
+        <Menu
+            Grid.Row="0"
+            Height="25"
+            VerticalAlignment="Top">
+            <MenuItem Header="Окно">
+                <MenuItem Command="ApplicationCommands.Close" Header="Закрыть" />
+            </MenuItem>
+        </Menu>
+        <Grid Grid.Row="1">
+            <DockPanel>
+                <StatusBar DockPanel.Dock="Bottom">
+                    <StatusBarItem>
+                        <TextBlock Name="StatusBlock" />
+                    </StatusBarItem>
+                </StatusBar>
+                <GroupBox Margin="3" Header="_CMIUGW_DEVICE_MAP">
+                    <DataGrid
+                        Name="DeviceMapGrid"
+                        BeginningEdit="GridBeginningEdit"
+                        ColumnHeaderStyle="{DynamicResource DataGridHeaderDefaultStyle}"
+                        CommandManager.PreviewCanExecute="PreviewCanExecute"
+                        ContextMenu="{StaticResource DeviceMapContextMenu}"
+                        DataContext="{StaticResource CmiuDeviceDataSource}"
+                        InitializingNewItem="GridInitializingNewItem"
+                        ItemsSource="{Binding}"
+                        MouseDown="OnMouseDown"
+                        Style="{DynamicResource DataGridDefaultStyle}">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn
+                                x:Name="Id"
+                                Width="30"
+                                Binding="{Binding Id, Mode=OneWay}"
+                                Header="Id"
+                                IsReadOnly="True" />
+                            <DataGridTextColumn
+                                x:Name="CellComputerNumber"
+                                Width="90"
+                                Binding="{Binding CellComputerNumber}"
+                                Header="CellComputer" />
+                            <DataGridTextColumn
+                                x:Name="FacilityNumber"
+                                Width="90"
+                                Binding="{Binding FacilityNumber}"
+                                Header="Facility" />
+                            <DataGridTextColumn
+                                x:Name="FieldDeviceNumber"
+                                Width="90"
+                                Binding="{Binding FieldDeviceNumber}"
+                                Header="FieldDevice" />
+                            <DataGridTextColumn
+                                x:Name="CmiuDeviceNumber"
+                                Width="120"
+                                Binding="{Binding CmiuDeviceNumber}"
+                                Header="Номер устройства ЦМИУ" />
+                            <DataGridComboBoxColumn
+                                x:Name="CmiuDeviceType"
+                                Width="105"
+                                Header="Тип устройства ЦМИУ"
+                                ItemsSource="{Binding Source={StaticResource CmiuDeviceTypeEnum}}"
+                                SelectedItemBinding="{Binding CmiuDeviceType}" />
+                            <DataGridTextColumn
+                                x:Name="DeviceIP"
+                                Width="93"
+                                Binding="{Binding DeviceIP}"
+                                Header="IP устройства" />
+                            <DataGridTextColumn
+                                x:Name="Protocol"
+                                Width="71"
+                                Binding="{Binding Protocol}"
+                                Header="Протокол" />
+                            <DataGridTextColumn
+                                x:Name="Port"
+                                Width="48"
+                                Binding="{Binding Port}"
+                                Header="Порт" />
+                            <DataGridTextColumn
+                                x:Name="DeviceAuth"
+                                Width="201"
+                                Binding="{Binding DeviceAuth}"
+                                ElementStyle="{StaticResource AuthStyle}"
+                                Header="Auth" />
+                            <DataGridTextColumn
+                                x:Name="Prompt"
+                                Width="56"
+                                Binding="{Binding Prompt}"
+                                Header="Prompt" />
+                            <DataGridTextColumn
+                                x:Name="Reboot"
+                                Width="134"
+                                Binding="{Binding Reboot}"
+                                Header="Reboot" />
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </GroupBox>
+            </DockPanel>
+        </Grid>
+    </Grid>
+</Window>

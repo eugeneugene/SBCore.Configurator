@@ -1,0 +1,150 @@
+﻿<Window
+    x:Class="SBCore.Configurator.EditWindows.CmiuCameraEditWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:camerasharedtypes="clr-namespace:CameraShared.Types;assembly=CameraSharedWindows"
+    xmlns:core="clr-namespace:System;assembly=mscorlib"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:localcode="clr-namespace:SBCore.Configurator.Code"
+    xmlns:localcommands="clr-namespace:SBCore.Configurator.Commands"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    Title="Карта камер ЦМИУ"
+    Width="742"
+    Height="450"
+    x:ClassModifier="internal"
+    Closing="OnClosing"
+    mc:Ignorable="d">
+    <Window.CommandBindings>
+        <CommandBinding Command="ApplicationCommands.Close" Executed="CloseCommandExecuted" />
+        <CommandBinding
+            CanExecute="AddRowCanExecute"
+            Command="localcommands:CmiuCameraCommands.AddRowCommand"
+            Executed="AddRowExecuted" />
+        <CommandBinding
+            CanExecute="RemoveRowCanExecute"
+            Command="localcommands:CmiuCameraCommands.RemoveRowCommand"
+            Executed="RemoveRowExecuted" />
+        <CommandBinding
+            CanExecute="PingCanExecute"
+            Command="localcommands:CmiuCameraCommands.PingCommand"
+            Executed="PingExecuted" />
+        <CommandBinding
+            CanExecute="PictureCanExecute"
+            Command="localcommands:CmiuCameraCommands.PictureCommand"
+            Executed="PictureExecuted" />
+        <CommandBinding
+            CanExecute="VideoCanExecute"
+            Command="localcommands:CmiuCameraCommands.VideoCommand"
+            Executed="VideoExecuted" />
+        <CommandBinding
+            CanExecute="AuthHelperCanExecute"
+            Command="localcommands:CmiuCameraCommands.AuthHelperCommand"
+            Executed="AuthHelperExecuted" />
+    </Window.CommandBindings>
+    <Window.Resources>
+        <CollectionViewSource x:Key="CmiuCameraDataSource" CollectionViewType="ListCollectionView" />
+        <ContextMenu x:Key="CameraMapContextMenu">
+            <MenuItem Command="localcommands:CmiuCameraCommands.AddRowCommand" Header="Добавить строку" />
+            <MenuItem Command="localcommands:CmiuCameraCommands.RemoveRowCommand" Header="Удалить строку" />
+            <Separator />
+            <MenuItem Command="localcommands:CmiuCameraCommands.PingCommand" Header="Ping" />
+            <MenuItem Command="localcommands:CmiuCameraCommands.AuthHelperCommand" Header="AuthHelper" />
+            <Separator />
+            <MenuItem Command="localcommands:CmiuCameraCommands.PictureCommand" Header="Картинка" />
+            <MenuItem Command="localcommands:CmiuCameraCommands.VideoCommand" Header="Видеопоток" />
+        </ContextMenu>
+        <ObjectDataProvider
+            x:Key="CmiuCameraTypeEnum"
+            MethodName="GetValues"
+            ObjectType="{x:Type core:Enum}">
+            <ObjectDataProvider.MethodParameters>
+                <x:Type Type="camerasharedtypes:CmiuCameraType" />
+            </ObjectDataProvider.MethodParameters>
+        </ObjectDataProvider>
+        <localcode:AuthConverter x:Key="AuthConverter" />
+        <localcode:UriConverter x:Key="UriConverter" />
+        <localcode:AuthDecorationConverter x:Key="AuthDecorationConverter" />
+        <Style x:Key="AuthStyle" TargetType="TextBlock">
+            <Setter Property="TextDecorations" Value="{Binding RelativeSource={RelativeSource Self}, Path=Text, Converter={StaticResource AuthDecorationConverter}}" />
+            <Setter Property="ToolTip" Value="{Binding RelativeSource={RelativeSource Self}, Path=Text, Converter={StaticResource AuthConverter}}" />
+        </Style>
+    </Window.Resources>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition MaxHeight="25" />
+            <RowDefinition />
+        </Grid.RowDefinitions>
+        <Menu
+            Grid.Row="0"
+            Height="25"
+            VerticalAlignment="Top">
+            <MenuItem Header="Окно">
+                <MenuItem Command="ApplicationCommands.Close" Header="Закрыть" />
+            </MenuItem>
+        </Menu>
+        <Grid Grid.Row="1">
+            <DockPanel>
+                <StatusBar DockPanel.Dock="Bottom">
+                    <StatusBarItem>
+                        <TextBlock Name="StatusBlock" />
+                    </StatusBarItem>
+                </StatusBar>
+                <GroupBox Margin="3" Header="_CAMERA_MAP">
+                    <DataGrid
+                        Name="CameraMapGrid"
+                        BeginningEdit="GridBeginningEdit"
+                        ColumnHeaderStyle="{DynamicResource DataGridHeaderDefaultStyle}"
+                        CommandManager.PreviewCanExecute="PreviewCanExecute"
+                        ContextMenu="{StaticResource CameraMapContextMenu}"
+                        DataContext="{StaticResource CmiuCameraDataSource}"
+                        InitializingNewItem="GridInitializingNewItem"
+                        ItemsSource="{Binding}"
+                        MouseDown="OnMouseDown"
+                        Style="{DynamicResource DataGridDefaultStyle}">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn
+                                x:Name="Id"
+                                Width="30"
+                                Binding="{Binding Id, Mode=OneWay}"
+                                Header="Id"
+                                IsReadOnly="True" />
+                            <DataGridComboBoxColumn
+                                x:Name="Cameratype"
+                                Width="90"
+                                Header="Тип камеры"
+                                ItemsSource="{Binding Source={StaticResource CmiuCameraTypeEnum}}"
+                                SelectedItemBinding="{Binding Cameratype}" />
+                            <DataGridHyperlinkColumn
+                                x:Name="CameraUri"
+                                Width="130"
+                                Binding="{Binding CameraUri, Converter={StaticResource UriConverter}}"
+                                Header="URL камеры" />
+                            <DataGridTextColumn
+                                x:Name="Auth"
+                                Width="170"
+                                Binding="{Binding Auth}"
+                                ElementStyle="{StaticResource AuthStyle}"
+                                Header="Auth камеры"
+                                IsReadOnly="True" />
+                            <DataGridTextColumn
+                                x:Name="Compression"
+                                Width="90"
+                                Binding="{Binding Compression, TargetNullValue={x:Static core:String.Empty}}"
+                                Header="Compression" />
+                            <DataGridTextColumn
+                                x:Name="Resolution"
+                                Width="90"
+                                Binding="{Binding Resolution}"
+                                Header="Resolution" />
+                            <DataGridTextColumn
+                                x:Name="Delay"
+                                Width="90"
+                                Binding="{Binding Delay, TargetNullValue={x:Static core:String.Empty}}"
+                                Header="Задержка" />
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </GroupBox>
+            </DockPanel>
+        </Grid>
+    </Grid>
+</Window>

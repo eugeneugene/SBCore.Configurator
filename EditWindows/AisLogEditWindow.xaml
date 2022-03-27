@@ -1,0 +1,307 @@
+﻿<Window
+    x:Class="SBCore.Configurator.EditWindows.AisLogEditWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:core="clr-namespace:System;assembly=mscorlib"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:localcode="clr-namespace:SBCore.Configurator.Code"
+    xmlns:localcommands="clr-namespace:SBCore.Configurator.Commands"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:sharedtypesais="clr-namespace:Shared.Types.AIS;assembly=Shared"
+    Title="Журнал АИС ЕПП"
+    Width="{Binding Source={x:Static SystemParameters.FullPrimaryScreenWidth}}"
+    Height="600"
+    x:ClassModifier="internal"
+    Closing="OnClosing"
+    ScrollViewer.CanContentScroll="True"
+    ScrollViewer.HorizontalScrollBarVisibility="Visible"
+    WindowStartupLocation="CenterScreen"
+    mc:Ignorable="d">
+    <Window.CommandBindings>
+        <CommandBinding Command="ApplicationCommands.Close" Executed="CloseCommandExecuted" />
+        <CommandBinding
+            CanExecute="AddRowCanExecute"
+            Command="localcommands:AisLogCommands.AddRowCommand"
+            Executed="AddRowExecuted" />
+        <CommandBinding
+            CanExecute="RemoveRowCanExecute"
+            Command="localcommands:AisLogCommands.RemoveRowCommand"
+            Executed="RemoveRowExecuted" />
+    </Window.CommandBindings>
+    <Window.Resources>
+        <CollectionViewSource x:Key="AisLogDataSource" CollectionViewType="ListCollectionView" />
+        <ObjectDataProvider
+            x:Key="AisParkingOperationEnum"
+            MethodName="GetValues"
+            ObjectType="{x:Type core:Enum}">
+            <ObjectDataProvider.MethodParameters>
+                <x:Type Type="sharedtypesais:AisParkingOperation" />
+            </ObjectDataProvider.MethodParameters>
+        </ObjectDataProvider>
+        <ObjectDataProvider
+            x:Key="AisAutoTypeEnum"
+            MethodName="GetValues"
+            ObjectType="{x:Type core:Enum}">
+            <ObjectDataProvider.MethodParameters>
+                <x:Type Type="sharedtypesais:AisAutoType" />
+            </ObjectDataProvider.MethodParameters>
+        </ObjectDataProvider>
+        <ObjectDataProvider
+            x:Key="AisSessionTypeEnum"
+            MethodName="GetValues"
+            ObjectType="{x:Type core:Enum}">
+            <ObjectDataProvider.MethodParameters>
+                <x:Type Type="sharedtypesais:AisSessionType" />
+            </ObjectDataProvider.MethodParameters>
+        </ObjectDataProvider>
+        <ObjectDataProvider
+            x:Key="AisPaymentTypeEnum"
+            MethodName="GetValues"
+            ObjectType="{x:Type core:Enum}">
+            <ObjectDataProvider.MethodParameters>
+                <x:Type Type="sharedtypesais:AisPaymentType" />
+            </ObjectDataProvider.MethodParameters>
+        </ObjectDataProvider>
+        <ObjectDataProvider
+            x:Key="DeliveryStatusEnum"
+            MethodName="GetValues"
+            ObjectType="{x:Type core:Enum}">
+            <ObjectDataProvider.MethodParameters>
+                <x:Type Type="sharedtypesais:AisSessionDeliveryStatus" />
+            </ObjectDataProvider.MethodParameters>
+        </ObjectDataProvider>
+        <ObjectDataProvider
+            x:Key="AisExemptionTypeEnum"
+            MethodName="GetValues"
+            ObjectType="{x:Type core:Enum}">
+            <ObjectDataProvider.MethodParameters>
+                <x:Type Type="sharedtypesais:AisExemptionType" />
+            </ObjectDataProvider.MethodParameters>
+        </ObjectDataProvider>
+        <ContextMenu x:Key="AisLogDataContextMenu">
+            <MenuItem Command="localcommands:AisLogCommands.AddRowCommand" Header="Добавить строку" />
+            <MenuItem Command="localcommands:AisLogCommands.RemoveRowCommand" Header="Удалить строку" />
+        </ContextMenu>
+    </Window.Resources>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition MaxHeight="25" />
+            <RowDefinition />
+        </Grid.RowDefinitions>
+        <Menu
+            Grid.Row="0"
+            Height="25"
+            VerticalAlignment="Top">
+            <MenuItem Header="Окно">
+                <MenuItem Command="ApplicationCommands.Close" Header="Закрыть" />
+            </MenuItem>
+        </Menu>
+        <Grid Grid.Row="1">
+            <DockPanel>
+                <StatusBar DockPanel.Dock="Bottom">
+                    <StatusBarItem>
+                        <TextBlock Name="StatusBlock" />
+                    </StatusBarItem>
+                </StatusBar>
+                <GroupBox Margin="3" Header="_AIS_LOG">
+                    <DataGrid
+                        Name="AisLogGrid"
+                        BeginningEdit="GridBeginningEdit"
+                        ColumnHeaderStyle="{DynamicResource DataGridHeaderDefaultStyle}"
+                        CommandManager.PreviewCanExecute="PreviewCanExecute"
+                        ContextMenu="{StaticResource AisLogDataContextMenu}"
+                        DataContext="{StaticResource AisLogDataSource}"
+                        InitializingNewItem="GridInitializingNewItem"
+                        ItemsSource="{Binding}"
+                        MouseDown="OnMouseDown"
+                        Style="{DynamicResource DataGridDefaultStyle}">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn
+                                x:Name="Id"
+                                Width="30"
+                                Binding="{Binding Id, Mode=OneWay}"
+                                Header="Id"
+                                IsReadOnly="True" />
+                            <DataGridTextColumn
+                                x:Name="Parking"
+                                Width="150"
+                                Binding="{Binding Parking}"
+                                Header="Номер парковки (номер зоны, Facility)" />
+                            <DataGridTextColumn
+                                x:Name="SessionId"
+                                Width="110"
+                                Binding="{Binding SessionId}"
+                                Header="Идентификатор сессии" />
+                            <DataGridComboBoxColumn
+                                x:Name="Operation"
+                                Width="110"
+                                Header="Наименование операции"
+                                ItemsSource="{Binding Source={StaticResource AisParkingOperationEnum}}"
+                                SelectedItemBinding="{Binding Operation}" />
+                            <DataGridTextColumn
+                                x:Name="Card"
+                                Width="190"
+                                Binding="{Binding Card}"
+                                Header="Номер карты Entervo (EPAN)" />
+                            <DataGridTextColumn
+                                x:Name="OperationNumber"
+                                Width="120"
+                                Binding="{Binding OperationNumber, TargetNullValue={x:Static core:String.Empty}}"
+                                Header="Номер транзакции Entervo (GlobalId)" />
+                            <DataGridTextColumn
+                                x:Name="Data"
+                                Width="180"
+                                Binding="{Binding Data}"
+                                Header="Дополнительная информация" />
+                            <DataGridTextColumn
+                                x:Name="LPR"
+                                Width="100"
+                                Binding="{Binding LPR}"
+                                Header="ГРЗ автомобиля" />
+                            <DataGridTextColumn
+                                x:Name="StartTime"
+                                Width="120"
+                                Binding="{Binding StartTime, StringFormat=G, TargetNullValue={x:Static core:String.Empty}}"
+                                Header="Время начала паркования" />
+                            <DataGridTextColumn
+                                x:Name="StopTime"
+                                Width="120"
+                                Binding="{Binding StopTime, StringFormat=G, TargetNullValue={x:Static core:String.Empty}}"
+                                Header="Время окончания паркования" />
+                            <DataGridTextColumn
+                                x:Name="FineCost"
+                                Width="130"
+                                Binding="{Binding FineCost, TargetNullValue={x:Static core:String.Empty}}"
+                                Header="Начисленная сумма штрафа" />
+                            <DataGridTextColumn
+                                x:Name="FinePaid"
+                                Width="130"
+                                Binding="{Binding FinePaid, TargetNullValue={x:Static core:String.Empty}}"
+                                Header="Сумма оплаченного штрафа" />
+                            <DataGridComboBoxColumn
+                                x:Name="AisAutoType"
+                                Width="80"
+                                Header="Тип ТС"
+                                SelectedItemBinding="{Binding AisAutoType, Converter={x:Static localcode:NullableEnumConverter.Instance}, ConverterParameter={x:Static sharedtypesais:AisAutoType.Auto}}">
+                                <DataGridComboBoxColumn.ItemsSource>
+                                    <CompositeCollection>
+                                        <x:Static Member="localcode:NullableEnumConverter.NullComboStringValue" />
+                                        <CollectionContainer Collection="{Binding Source={StaticResource AisAutoTypeEnum}}" />
+                                    </CompositeCollection>
+                                </DataGridComboBoxColumn.ItemsSource>
+                            </DataGridComboBoxColumn>
+                            <DataGridComboBoxColumn
+                                x:Name="AisSessionType"
+                                Width="80"
+                                Header="Тип сессии"
+                                SelectedItemBinding="{Binding AisSessionType, Converter={x:Static localcode:NullableEnumConverter.Instance}, ConverterParameter={x:Static sharedtypesais:AisSessionType.Transaction}}">
+                                <DataGridComboBoxColumn.ItemsSource>
+                                    <CompositeCollection>
+                                        <x:Static Member="localcode:NullableEnumConverter.NullComboStringValue" />
+                                        <CollectionContainer Collection="{Binding Source={StaticResource AisSessionTypeEnum}}" />
+                                    </CompositeCollection>
+                                </DataGridComboBoxColumn.ItemsSource>
+                            </DataGridComboBoxColumn>
+                            <DataGridTextColumn
+                                x:Name="SubscriptionTicket"
+                                Width="120"
+                                Binding="{Binding SubscriptionTicket}"
+                                Header="Номер абонемента" />
+                            <DataGridTextColumn
+                                x:Name="Paid"
+                                Width="80"
+                                Binding="{Binding Paid, TargetNullValue={x:Static core:String.Empty}}"
+                                Header="Сумма оплаты" />
+                            <DataGridTextColumn
+                                x:Name="ExternalReference"
+                                Width="180"
+                                Binding="{Binding ExternalReference}"
+                                Header="Уникальный идентификатор парковочной сессии" />
+                            <DataGridTextColumn
+                                x:Name="AnticipatedStopTime"
+                                Width="120"
+                                Binding="{Binding AnticipatedStopTime, StringFormat=G, TargetNullValue={x:Static core:String.Empty}}"
+                                Header="Ожидаемое время выезда" />
+                            <DataGridTextColumn
+                                x:Name="PaymentTime"
+                                Width="120"
+                                Binding="{Binding PaymentTime, StringFormat=G, TargetNullValue={x:Static core:String.Empty}}"
+                                Header="Время платежа" />
+                            <DataGridComboBoxColumn
+                                x:Name="PaymentType"
+                                Width="80"
+                                Header="Тип платежа"
+                                SelectedItemBinding="{Binding PaymentType, Converter={x:Static localcode:NullableEnumConverter.Instance}, ConverterParameter={x:Static sharedtypesais:AisPaymentType.Cash}}">
+                                <DataGridComboBoxColumn.ItemsSource>
+                                    <CompositeCollection>
+                                        <x:Static Member="localcode:NullableEnumConverter.NullComboStringValue" />
+                                        <CollectionContainer Collection="{Binding Source={StaticResource AisPaymentTypeEnum}}" />
+                                    </CompositeCollection>
+                                </DataGridComboBoxColumn.ItemsSource>
+                            </DataGridComboBoxColumn>
+                            <DataGridTextColumn
+                                x:Name="RRN"
+                                Width="100"
+                                Binding="{Binding RRN}"
+                                Header="RRN карты" />
+                            <DataGridTextColumn
+                                x:Name="NotDeliveredSum"
+                                Width="130"
+                                Binding="{Binding NotDeliveredSum, TargetNullValue={x:Static core:String.Empty}}"
+                                Header="Сумма невыданной сдачи" />
+                            <DataGridTextColumn
+                                x:Name="NotDeliveredSumType"
+                                Width="130"
+                                Binding="{Binding NotDeliveredSumType}"
+                                Header="Причина невыдачи сдачи" />
+                            <DataGridCheckBoxColumn
+                                x:Name="Exemption"
+                                Width="60"
+                                Binding="{Binding Exemption, TargetNullValue={x:Static core:String.Empty}}"
+                                Header="Льгота" />
+                            <DataGridComboBoxColumn
+                                x:Name="ExemptionType"
+                                Width="60"
+                                Header="Тип льготы"
+                                SelectedItemBinding="{Binding ExemptionType, Converter={x:Static localcode:NullableEnumConverter.Instance}, ConverterParameter={x:Static sharedtypesais:AisExemptionType.rzd}}">
+                                <DataGridComboBoxColumn.ItemsSource>
+                                    <CompositeCollection>
+                                        <x:Static Member="localcode:NullableEnumConverter.NullComboStringValue" />
+                                        <CollectionContainer Collection="{Binding Source={StaticResource AisExemptionTypeEnum}}" />
+                                    </CompositeCollection>
+                                </DataGridComboBoxColumn.ItemsSource>
+                            </DataGridComboBoxColumn>
+                            <DataGridComboBoxColumn
+                                x:Name="DeliveryStatus"
+                                Width="90"
+                                Header="Сообщение доставлено"
+                                SelectedItemBinding="{Binding DeliveryStatus, Converter={x:Static localcode:NullableEnumConverter.Instance}, ConverterParameter={x:Static sharedtypesais:AisSessionDeliveryStatus.NotDelivered}}">
+                                <DataGridComboBoxColumn.ItemsSource>
+                                    <CompositeCollection>
+                                        <x:Static Member="localcode:NullableEnumConverter.NullComboStringValue" />
+                                        <CollectionContainer Collection="{Binding Source={StaticResource DeliveryStatusEnum}}" />
+                                    </CompositeCollection>
+                                </DataGridComboBoxColumn.ItemsSource>
+                            </DataGridComboBoxColumn>
+                            <DataGridTextColumn
+                                x:Name="DeliveryTime"
+                                Width="120"
+                                Binding="{Binding DeliveryTime, StringFormat=G, TargetNullValue={x:Static core:String.Empty}}"
+                                Header="Время доставки в АИС ЕПП" />
+                            <DataGridTextColumn
+                                x:Name="DeliverAttempt"
+                                Width="120"
+                                Binding="{Binding DeliverAttempt}"
+                                Header="Попыток доставки в АИС ЕПП" />
+                            <DataGridTextColumn
+                                x:Name="TransactionUid"
+                                Width="250"
+                                Binding="{Binding TransactionUid}"
+                                Header="TransactionUid" />
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </GroupBox>
+            </DockPanel>
+        </Grid>
+    </Grid>
+</Window>

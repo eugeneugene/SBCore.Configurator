@@ -1,0 +1,108 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+	<PropertyGroup>
+		<OutputType>WinExe</OutputType>
+		<TargetFramework>net6.0-windows</TargetFramework>
+		<UseWPF>true</UseWPF>
+		<StartupObject>SBCoreConfigurator.App</StartupObject>
+		<AssemblyVersion>2.4.0.0</AssemblyVersion>
+		<FileVersion>2.4.0.0</FileVersion>
+		<Version>2.4</Version>
+		<Authors>Евгений Подкопаев</Authors>
+		<Company>ИП Гаврилов</Company>
+		<PackageProjectUrl>https://geois.ru</PackageProjectUrl>
+		<Product>SBCore</Product>
+		<NeutralLanguage>ru</NeutralLanguage>
+		<Platforms>x64</Platforms>
+		<ApplicationIcon>Resources\Icon.ico</ApplicationIcon>
+		<Description>Конфигуратор сервиса интеграции с оборудованием Scheidt&amp;Bachmann</Description>
+		<Nullable>warnings</Nullable>
+		<SatelliteResourceLanguages>en</SatelliteResourceLanguages>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<Content Include="appsettings.Development.json">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+		<Content Include="appsettings.json">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+	</ItemGroup>
+
+	<ItemGroup>
+		<PackageReference Include="FluentFTP" Version="37.0.1" />
+		<PackageReference Include="LibVLCSharp.WPF" Version="3.6.5" />
+		<PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="6.0.2" />
+		<PackageReference Include="Microsoft.Xaml.Behaviors.Wpf" Version="1.1.39" />
+		<PackageReference Include="NLog.Web.AspNetCore" Version="4.14.0" />
+		<PackageReference Include="SSH.NET" Version="2020.0.1" />
+		<PackageReference Include="VideoLAN.LibVLC.Windows" Version="3.0.16" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\SBShared\SBShared.csproj" />
+		<ProjectReference Include="..\WpfNotification\WpfNotification.csproj">
+			<TreatAsUsed>true</TreatAsUsed>
+		</ProjectReference>
+	</ItemGroup>
+
+	<ItemGroup>
+		<Compile Update="Main.Designer.cs">
+			<DesignTimeSharedInput>True</DesignTimeSharedInput>
+			<AutoGen>True</AutoGen>
+			<DependentUpon>Main.settings</DependentUpon>
+		</Compile>
+		<Compile Update="TextResources\Russian.Designer.cs">
+			<DesignTime>True</DesignTime>
+			<AutoGen>True</AutoGen>
+			<DependentUpon>Russian.resx</DependentUpon>
+		</Compile>
+		<Compile Update="TextResources\SQLite.Designer.cs">
+			<DesignTime>True</DesignTime>
+			<AutoGen>True</AutoGen>
+			<DependentUpon>SQLite.resx</DependentUpon>
+		</Compile>
+	</ItemGroup>
+
+	<ItemGroup>
+		<EmbeddedResource Update="TextResources\Russian.resx">
+			<Generator>ResXFileCodeGenerator</Generator>
+			<LastGenOutput>Russian.Designer.cs</LastGenOutput>
+		</EmbeddedResource>
+		<EmbeddedResource Update="TextResources\SQLite.resx">
+			<Generator>ResXFileCodeGenerator</Generator>
+			<LastGenOutput>SQLite.Designer.cs</LastGenOutput>
+		</EmbeddedResource>
+	</ItemGroup>
+
+	<ItemGroup>
+		<None Update="Main.settings">
+			<Generator>SettingsSingleFileGenerator</Generator>
+			<LastGenOutput>Main.Designer.cs</LastGenOutput>
+		</None>
+	</ItemGroup>
+
+	<ItemGroup>
+		<None Include="NLog.config">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Update="NLog.xsd">
+			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
+		</None>
+	</ItemGroup>
+
+	<PropertyGroup>
+		<VlcWindowsX86Enabled>false</VlcWindowsX86Enabled>
+		<VlcWindowsX64Enabled>true</VlcWindowsX64Enabled>
+		<VlcWindowsX64TargetDir>.</VlcWindowsX64TargetDir>
+	</PropertyGroup>
+
+	<UsingTask TaskName="GetCurrentBuildVersion" AssemblyFile="$(SolutionDir)DC.Build.Tasks\DC.Build.Tasks.dll" Condition="'$(Configuration)'=='Release'" />
+	<Target Name="BeforeBuildActionsProject" BeforeTargets="BeforeBuild" Condition="'$(Configuration)'=='Release'">
+		<GetCurrentBuildVersion BaseVersion="$(FileVersion)">
+			<Output TaskParameter="Version" PropertyName="FileVersion" />
+		</GetCurrentBuildVersion>
+		<PropertyGroup>
+			<AssemblyVersion>$(FileVersion)</AssemblyVersion>
+		</PropertyGroup>
+	</Target>
+</Project>

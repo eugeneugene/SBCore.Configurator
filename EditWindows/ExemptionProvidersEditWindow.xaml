@@ -1,0 +1,87 @@
+﻿<Window
+    x:Class="SBCore.Configurator.EditWindows.ExemptionProvidersEditWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:localcommands="clr-namespace:SBCore.Configurator.Commands"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    Title="Карта провайдеров Entervo"
+    Width="442"
+    Height="400"
+    x:ClassModifier="internal"
+    Closing="OnClosing"
+    mc:Ignorable="d">
+    <Window.CommandBindings>
+        <CommandBinding Command="ApplicationCommands.Close" Executed="CloseCommandExecuted" />
+        <CommandBinding
+            CanExecute="AddRowCanExecute"
+            Command="localcommands:ExemptionProvidersCommands.AddRowCommand"
+            Executed="AddRowExecuted" />
+        <CommandBinding
+            CanExecute="RemoveRowCanExecute"
+            Command="localcommands:ExemptionProvidersCommands.RemoveRowCommand"
+            Executed="RemoveRowExecuted" />
+    </Window.CommandBindings>
+    <Window.Resources>
+        <ContextMenu x:Key="ExemptionProvidersContextMenu">
+            <MenuItem Command="localcommands:ExemptionProvidersCommands.AddRowCommand" Header="Добавить строку" />
+            <MenuItem Command="localcommands:ExemptionProvidersCommands.RemoveRowCommand" Header="Удалить строку" />
+        </ContextMenu>
+        <CollectionViewSource x:Key="OAProviderDataSource" CollectionViewType="ListCollectionView" />
+    </Window.Resources>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition MaxHeight="25" />
+            <RowDefinition />
+        </Grid.RowDefinitions>
+        <Menu
+            Grid.Row="0"
+            Height="25"
+            VerticalAlignment="Top">
+            <MenuItem Header="Окно">
+                <MenuItem Command="ApplicationCommands.Close" Header="Закрыть" />
+            </MenuItem>
+        </Menu>
+        <Grid Grid.Row="1">
+            <DockPanel>
+                <StatusBar DockPanel.Dock="Bottom">
+                    <StatusBarItem>
+                        <TextBlock Name="StatusBlock" />
+                    </StatusBarItem>
+                </StatusBar>
+                <GroupBox Margin="3" Header="_EXEMPTION_PROVIDERS">
+                    <DataGrid
+                        Name="ProvidersMapGrid"
+                        BeginningEdit="GridBeginningEdit"
+                        ColumnHeaderStyle="{DynamicResource DataGridHeaderDefaultStyle}"
+                        CommandManager.PreviewCanExecute="PreviewCanExecute"
+                        ContextMenu="{StaticResource ExemptionProvidersContextMenu}"
+                        DataContext="{StaticResource OAProviderDataSource}"
+                        InitializingNewItem="GridInitializingNewItem"
+                        ItemsSource="{Binding}"
+                        MouseDown="OnMouseDown"
+                        Style="{DynamicResource DataGridDefaultStyle}">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn
+                                x:Name="Id"
+                                Width="30"
+                                Binding="{Binding Id, Mode=OneWay}"
+                                Header="Id"
+                                IsReadOnly="True" />
+                            <DataGridTextColumn
+                                x:Name="ProviderId"
+                                Width="180"
+                                Binding="{Binding ProviderId}"
+                                Header="Идентификатор провайдера" />
+                            <DataGridTextColumn
+                                x:Name="ProviderName"
+                                Width="180"
+                                Binding="{Binding ProviderName}"
+                                Header="ProviderName" />
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </GroupBox>
+            </DockPanel>
+        </Grid>
+    </Grid>
+</Window>

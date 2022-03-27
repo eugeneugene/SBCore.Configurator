@@ -1,0 +1,323 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="CameraNotReady" xml:space="preserve">
+    <value>Камера не настроена</value>
+  </data>
+  <data name="CameraPrepare" xml:space="preserve">
+    <value>Подготовка камеры</value>
+  </data>
+  <data name="Cancel" xml:space="preserve">
+    <value>Отмена</value>
+  </data>
+  <data name="DatabaseNoName" xml:space="preserve">
+    <value>Не задано имя базы данных</value>
+  </data>
+  <data name="DatabaseNotOpen" xml:space="preserve">
+    <value>База данных не открыта</value>
+  </data>
+  <data name="DatabaseOk" xml:space="preserve">
+    <value>Database ok</value>
+  </data>
+  <data name="DbException" xml:space="preserve">
+    <value>Ошибка базы данных</value>
+  </data>
+  <data name="ErrorCannotOpen" xml:space="preserve">
+    <value>Не могу открыть файл</value>
+  </data>
+  <data name="ErrorEmptyFileName" xml:space="preserve">
+    <value>Не указано имя файла</value>
+  </data>
+  <data name="ExceptionA" xml:space="preserve">
+    <value>Exception: </value>
+  </data>
+  <data name="ImageCopied" xml:space="preserve">
+    <value>Скопировано</value>
+  </data>
+  <data name="ImageProcess" xml:space="preserve">
+    <value>Обрабатывается картинка с камеры</value>
+  </data>
+  <data name="ImageReceivedAxis" xml:space="preserve">
+    <value>Изображение получено</value>
+  </data>
+  <data name="ImageReceivedOnvifA5" xml:space="preserve">
+    <value>Изображение получено, profile quality = {0}, profile resolution = {1}x{2}, image resolution = {3}x{4}</value>
+  </data>
+  <data name="IndicesReadError" xml:space="preserve">
+    <value>Не удалось прочитать индексы</value>
+  </data>
+  <data name="InnerExceptionA" xml:space="preserve">
+    <value>Inner Exception: </value>
+  </data>
+  <data name="InternalError" xml:space="preserve">
+    <value>Ошибка программы</value>
+  </data>
+  <data name="InvalidCameraType" xml:space="preserve">
+    <value>Неверный тип камеры</value>
+  </data>
+  <data name="InvalidColumnStructureA4" xml:space="preserve">
+    <value>Неверная структура колонки: '{0}' Параметр: '{1}' Значение: '[2]' Референсное значение: '{3}'</value>
+  </data>
+  <data name="InvalidIndexA1" xml:space="preserve">
+    <value>Индекс '{0}' не соответствует шаблону</value>
+  </data>
+  <data name="InvalidTableStructure" xml:space="preserve">
+    <value>Неверная структура таблицы</value>
+  </data>
+  <data name="MissingColumnA1" xml:space="preserve">
+    <value>Отсутствует поле: '{0}' </value>
+  </data>
+  <data name="MissingIndexA1" xml:space="preserve">
+    <value>Отсутствует индекс: '{0}'</value>
+  </data>
+  <data name="NoImageFromCamera" xml:space="preserve">
+    <value>Картинка не получена</value>
+  </data>
+  <data name="NoIP" xml:space="preserve">
+    <value>Не задан IP</value>
+  </data>
+  <data name="NoLogin" xml:space="preserve">
+    <value>DeviceAuth Login не задан</value>
+  </data>
+  <data name="NoPort" xml:space="preserve">
+    <value>Не задан Port</value>
+  </data>
+  <data name="NoProtoHttp" xml:space="preserve">
+    <value>Не задан Protocol (должен быть http или https)</value>
+  </data>
+  <data name="OpenFileDialogTitle" xml:space="preserve">
+    <value>База данных SQLite</value>
+  </data>
+  <data name="OpenImageDialogTitle" xml:space="preserve">
+    <value>Открыть файл с изображением</value>
+  </data>
+  <data name="Ping" xml:space="preserve">
+    <value>Ping</value>
+  </data>
+  <data name="PingException" xml:space="preserve">
+    <value>Ping Exception</value>
+  </data>
+  <data name="PingFail1A2" xml:space="preserve">
+    <value>Ping '{0}' неудачный
+flag: {1}</value>
+  </data>
+  <data name="PingFail2A2" xml:space="preserve">
+    <value>Ping '{0}' неудачный, flag: {1}</value>
+  </data>
+  <data name="PingSuccess1A2" xml:space="preserve">
+    <value>Ping '{0}' успешный
+RoundTrip time: {1}</value>
+  </data>
+  <data name="PingSuccess2A2" xml:space="preserve">
+    <value>Ping '{0}' успешный, RoundTrip time: {1}</value>
+  </data>
+  <data name="ProfileJPEGNotFound" xml:space="preserve">
+    <value>Профиль JPEG не найден</value>
+  </data>
+  <data name="ProfileLoad" xml:space="preserve">
+    <value>Загрузка профилей</value>
+  </data>
+  <data name="ProfileLoadError" xml:space="preserve">
+    <value>Ошибка загрузки профилей</value>
+  </data>
+  <data name="ProfileLoadSuccess" xml:space="preserve">
+    <value>Профили загружены успешно</value>
+  </data>
+  <data name="Reboot" xml:space="preserve">
+    <value>Reboot</value>
+  </data>
+  <data name="RebootSent" xml:space="preserve">
+    <value>Команда на перезагрузку успешно отправлена</value>
+  </data>
+  <data name="RecordsRemoved" xml:space="preserve">
+    <value>Записи удалены</value>
+  </data>
+  <data name="RedundantColumnA1" xml:space="preserve">
+    <value>Лишнее поле: '{0}'</value>
+  </data>
+  <data name="Rows0A1" xml:space="preserve">
+    <value>{0} строк</value>
+  </data>
+  <data name="Rows1A1" xml:space="preserve">
+    <value>{0} строка</value>
+  </data>
+  <data name="Rows2A1" xml:space="preserve">
+    <value>{0} строки</value>
+  </data>
+  <data name="RowsChanged1A1" xml:space="preserve">
+    <value>{0} запись изменена</value>
+  </data>
+  <data name="RowsChanged2A1" xml:space="preserve">
+    <value>{0} записи изменено</value>
+  </data>
+  <data name="RowsChanged5A1" xml:space="preserve">
+    <value>{0} записей изменено</value>
+  </data>
+  <data name="SqliteTableExceptionA2" xml:space="preserve">
+    <value>Ошибка SQLite: Таблица: {0} Exception: {1}</value>
+  </data>
+  <data name="SSHConnectionFailed" xml:space="preserve">
+    <value>Подключение по SSH не удалось</value>
+  </data>
+  <data name="SSHRebootFailedA2" xml:space="preserve">
+    <value>Перезагрузка по SSH не удалась: {0} {1}</value>
+  </data>
+  <data name="SSHRebootTaskFailed" xml:space="preserve">
+    <value>Перезагрузка по SSH: Task failed</value>
+  </data>
+  <data name="SSHRebootTimeout" xml:space="preserve">
+    <value>Перезагрузка по SSH: Таймаут</value>
+  </data>
+  <data name="StartVideoA" xml:space="preserve">
+    <value>Запускаю видео, Uri: </value>
+  </data>
+  <data name="Success" xml:space="preserve">
+    <value>Успешная команда</value>
+  </data>
+  <data name="SuccessfulUpdate" xml:space="preserve">
+    <value>Успешное обновление</value>
+  </data>
+  <data name="TableNoScheme" xml:space="preserve">
+    <value>Не удалось прочитать схему таблицы</value>
+  </data>
+  <data name="TableNotFound" xml:space="preserve">
+    <value>Таблица не найдена</value>
+  </data>
+  <data name="TableRecreated" xml:space="preserve">
+    <value>Таблица пересоздана</value>
+  </data>
+  <data name="Version" xml:space="preserve">
+    <value>Version</value>
+  </data>
+  <data name="VersionException" xml:space="preserve">
+    <value>Version Exception</value>
+  </data>
+  <data name="WrongProto" xml:space="preserve">
+    <value>Неверный протокол</value>
+  </data>
+  <data name="WrongProtoA" xml:space="preserve">
+    <value>Неверный протокол: </value>
+  </data>
+  <data name="WrongProtoHttp" xml:space="preserve">
+    <value>Неверный Protocol (должен быть http или https)</value>
+  </data>
+  <data name="WrongRebootData" xml:space="preserve">
+    <value>Данные для перезагрузки устройства в таблице CMIUGW_DEVICE_MAP отсутствуют</value>
+  </data>
+</root>

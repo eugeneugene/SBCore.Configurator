@@ -1,0 +1,143 @@
+﻿<Window
+    x:Class="SBCore.Configurator.EditWindows.EventCameraEditWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="clr-namespace:SBCore.Configurator"
+    xmlns:localcode="clr-namespace:SBCore.Configurator.Code"
+    xmlns:localcommands="clr-namespace:SBCore.Configurator.Commands"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    Title="Карта событий"
+    Width="792"
+    Height="450"
+    x:ClassModifier="internal"
+    Closing="OnClosing"
+    mc:Ignorable="d">
+    <Window.CommandBindings>
+        <CommandBinding Command="ApplicationCommands.Close" Executed="CloseCommandExecuted" />
+        <CommandBinding
+            CanExecute="AddRowCanExecute"
+            Command="localcommands:EventCameraCommands.AddRowCommand"
+            Executed="AddRowExecuted" />
+        <CommandBinding
+            CanExecute="RemoveRowCanExecute"
+            Command="localcommands:EventCameraCommands.RemoveRowCommand"
+            Executed="RemoveRowExecuted" />
+        <CommandBinding
+            CanExecute="RemoveRowCanExecute"
+            Command="localcommands:EventCameraCommands.DeviceCmiuCameraCommand"
+            Executed="DeviceCmiuCameraCommandExecuted" />
+    </Window.CommandBindings>
+    <Window.Resources>
+        <CollectionViewSource x:Key="EventCameraDataSource" CollectionViewType="ListCollectionView" />
+        <CollectionViewSource x:Key="DeviceCmiuCameraDataSource" CollectionViewType="ListCollectionView" />
+        <localcode:EventTextConverter x:Key="EventTextConverter" />
+        <localcode:EventSourceConverter x:Key="EventSourceConverter" />
+        <localcode:EventCellEditingConverter x:Key="EventCellEditingConverter" />
+        <localcode:DeviceCmiuCameraCellConverter x:Key="DeviceCmiuCameraCellConverter" />
+        <localcode:DeviceCmiuCameraCellEditingConverter x:Key="DeviceCmiuCameraCellEditingConverter" />
+        <ContextMenu x:Key="EventCameraContextMenu">
+            <MenuItem Command="localcommands:EventCameraCommands.DeviceCmiuCameraCommand" Header="Идентификаторы камер ЦМИУ" />
+            <Separator />
+            <MenuItem Command="localcommands:EventCameraCommands.AddRowCommand" Header="Добавить строку" />
+            <MenuItem Command="localcommands:EventCameraCommands.RemoveRowCommand" Header="Удалить строку" />
+        </ContextMenu>
+    </Window.Resources>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition MaxHeight="25" />
+            <RowDefinition />
+        </Grid.RowDefinitions>
+        <Menu
+            Grid.Row="0"
+            Height="25"
+            VerticalAlignment="Top">
+            <MenuItem Header="Окно">
+                <MenuItem Command="localcommands:EventCameraCommands.DeviceCmiuCameraCommand" Header="Идентификаторы камер ЦМИУ" />
+                <Separator />
+                <MenuItem Command="ApplicationCommands.Close" Header="Закрыть" />
+            </MenuItem>
+        </Menu>
+        <Grid Grid.Row="1">
+            <DockPanel>
+                <StatusBar DockPanel.Dock="Bottom">
+                    <StatusBarItem>
+                        <TextBlock Name="StatusBlock" />
+                    </StatusBarItem>
+                </StatusBar>
+                <GroupBox Margin="3" Header="_EVENT_CAMERA_MAP">
+                    <DataGrid
+                        Name="EventCameraGrid"
+                        BeginningEdit="GridBeginningEdit"
+                        ColumnHeaderStyle="{DynamicResource DataGridHeaderDefaultStyle}"
+                        CommandManager.PreviewCanExecute="PreviewCanExecute"
+                        ContextMenu="{StaticResource EventCameraContextMenu}"
+                        DataContext="{StaticResource EventCameraDataSource}"
+                        InitializingNewItem="GridInitializingNewItem"
+                        ItemsSource="{Binding}"
+                        MouseDown="OnMouseDown"
+                        Style="{DynamicResource DataGridDefaultStyle}">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn
+                                x:Name="Id"
+                                Width="30"
+                                Binding="{Binding Id, Mode=OneWay}"
+                                Header="Id"
+                                IsReadOnly="True" />
+                            <DataGridTemplateColumn
+                                x:Name="EntervoEventNumber"
+                                Width="430"
+                                Header="Номер события">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="{Binding EventId, Converter={StaticResource EventTextConverter}}" />
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                                <DataGridTemplateColumn.CellEditingTemplate>
+                                    <DataTemplate>
+                                        <ComboBox
+                                            IsEditable="True"
+                                            IsReadOnly="False"
+                                            ItemsSource="{Binding Source={x:Static local:StaticResources.EventMap}, Converter={StaticResource EventSourceConverter}}"
+                                            SelectedItem="{Binding EventId}">
+                                            <ComboBox.ItemTemplate>
+                                                <DataTemplate>
+                                                    <TextBlock Text="{Binding Converter={StaticResource EventCellEditingConverter}}" />
+                                                </DataTemplate>
+                                            </ComboBox.ItemTemplate>
+                                        </ComboBox>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellEditingTemplate>
+                            </DataGridTemplateColumn>
+                            <DataGridTemplateColumn
+                                x:Name="DeviceCmiuCameraId"
+                                Width="280"
+                                Header="Id камеры ЦМИУ">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="{Binding DeviceCmiuCamera, Converter={StaticResource DeviceCmiuCameraCellConverter}}" />
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                                <DataGridTemplateColumn.CellEditingTemplate>
+                                    <DataTemplate>
+                                        <ComboBox
+                                            IsEditable="False"
+                                            IsReadOnly="False"
+                                            ItemsSource="{Binding Source={StaticResource DeviceCmiuCameraDataSource}}"
+                                            SelectedItem="{Binding DeviceCmiuCamera}">
+                                            <ComboBox.ItemTemplate>
+                                                <DataTemplate>
+                                                    <TextBlock Text="{Binding Converter={StaticResource DeviceCmiuCameraCellEditingConverter}}" />
+                                                </DataTemplate>
+                                            </ComboBox.ItemTemplate>
+                                        </ComboBox>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellEditingTemplate>
+                            </DataGridTemplateColumn>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </GroupBox>
+            </DockPanel>
+        </Grid>
+    </Grid>
+</Window>

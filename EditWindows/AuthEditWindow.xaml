@@ -1,0 +1,84 @@
+﻿<Window
+    x:Class="SBCore.Configurator.EditWindows.AuthEditWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:localmodels="clr-namespace:SBCore.Configurator.Models"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    Title="AuthEditWindow"
+    Width="660"
+    Height="180"
+    d:DataContext="{d:DesignInstance Type=localmodels:AuthModel}"
+    x:ClassModifier="internal"
+    Loaded="WindowLoaded"
+    mc:Ignorable="d">
+    <Window.Resources>
+        <Style x:Key="TextBoxInvalid" TargetType="TextBox">
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding Path=AuthValid}" Value="False">
+                    <Setter Property="Background" Value="MistyRose" />
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+    </Window.Resources>
+    <Grid HorizontalAlignment="Center" VerticalAlignment="Center">
+        <StackPanel>
+            <StackPanel
+                Margin="10"
+                HorizontalAlignment="Center"
+                Orientation="Horizontal">
+                <Label
+                    Width="70"
+                    HorizontalContentAlignment="Right"
+                    Content="Login:" />
+                <TextBox
+                    x:Name="tbLogin"
+                    Width="200"
+                    Text="{Binding Path=Login, UpdateSourceTrigger=PropertyChanged}" />
+                <Label
+                    Width="70"
+                    HorizontalContentAlignment="Right"
+                    Content="Password:" />
+                <TextBox
+                    x:Name="tbPassword"
+                    Width="200"
+                    Text="{Binding Path=Password, UpdateSourceTrigger=PropertyChanged}" />
+            </StackPanel>
+            <StackPanel
+                Margin="10"
+                HorizontalAlignment="Center"
+                Orientation="Horizontal">
+                <Label
+                    Width="70"
+                    HorizontalContentAlignment="Right"
+                    Content="Auth:" />
+                <TextBox
+                    x:Name="tbAuth"
+                    Width="200"
+                    Style="{StaticResource TextBoxInvalid}"
+                    Text="{Binding Path=Auth, UpdateSourceTrigger=PropertyChanged}" />
+                <Label
+                    Width="70"
+                    HorizontalContentAlignment="Right"
+                    Content="Salt:" />
+                <TextBox
+                    x:Name="tbSalt"
+                    Width="200"
+                    Background="{DynamicResource {x:Static SystemColors.GradientInactiveCaptionBrushKey}}"
+                    IsReadOnly="True"
+                    Text="{Binding Path=Salt}" />
+            </StackPanel>
+            <StackPanel Margin="10" HorizontalAlignment="Center">
+                <Button
+                    x:Name="bOk"
+                    Width="96"
+                    Height="21"
+                    Margin="2"
+                    Click="OkClick"
+                    Content="Ok"
+                    IsDefault="True"
+                    Style="{DynamicResource PressButtonEffectStyle}" />
+            </StackPanel>
+        </StackPanel>
+    </Grid>
+</Window>

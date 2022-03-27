@@ -1,0 +1,174 @@
+﻿<Window
+    x:Class="SBCore.Configurator.EditWindows.ExemptionLogEditWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:core="clr-namespace:System;assembly=mscorlib"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:localcommands="clr-namespace:SBCore.Configurator.Commands"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:sharedtypesais="clr-namespace:Shared.Types.AIS;assembly=Shared"
+    xmlns:sharedtypesasop="clr-namespace:Shared.Types.ASOP;assembly=Shared"
+    Title="Журнал отправки скидок метро"
+    Width="1882"
+    Height="450"
+    x:ClassModifier="internal"
+    Closing="OnClosing"
+    mc:Ignorable="d">
+    <Window.CommandBindings>
+        <CommandBinding Command="ApplicationCommands.Close" Executed="CloseCommandExecuted" />
+        <CommandBinding
+            CanExecute="AddRowCanExecute"
+            Command="localcommands:ExemptionLogCommands.AddRowCommand"
+            Executed="AddRowExecuted" />
+        <CommandBinding
+            CanExecute="RemoveRowCanExecute"
+            Command="localcommands:ExemptionLogCommands.RemoveRowCommand"
+            Executed="RemoveRowExecuted" />
+    </Window.CommandBindings>
+    <Window.Resources>
+        <ContextMenu x:Key="ExemptionLogContextMenu">
+            <MenuItem Command="localcommands:ExemptionLogCommands.AddRowCommand" Header="Добавить строку" />
+            <MenuItem Command="localcommands:ExemptionLogCommands.RemoveRowCommand" Header="Удалить строку" />
+        </ContextMenu>
+        <CollectionViewSource x:Key="ExemptionLogDataSource" CollectionViewType="ListCollectionView" />
+        <ObjectDataProvider
+            x:Key="ExemptionResultEnum"
+            MethodName="GetValues"
+            ObjectType="{x:Type core:Enum}">
+            <ObjectDataProvider.MethodParameters>
+                <x:Type Type="sharedtypesasop:ExemptionResult" />
+            </ObjectDataProvider.MethodParameters>
+        </ObjectDataProvider>
+        <ObjectDataProvider
+            x:Key="DeliveryStatusEnum"
+            MethodName="GetValues"
+            ObjectType="{x:Type core:Enum}">
+            <ObjectDataProvider.MethodParameters>
+                <x:Type Type="sharedtypesais:AisSessionDeliveryStatus" />
+            </ObjectDataProvider.MethodParameters>
+        </ObjectDataProvider>
+    </Window.Resources>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition MaxHeight="25" />
+            <RowDefinition />
+        </Grid.RowDefinitions>
+        <Menu
+            Grid.Row="0"
+            Height="25"
+            VerticalAlignment="Top">
+            <MenuItem Header="Окно">
+                <MenuItem Command="ApplicationCommands.Close" Header="Закрыть" />
+            </MenuItem>
+        </Menu>
+        <Grid Grid.Row="1">
+            <DockPanel>
+                <StatusBar DockPanel.Dock="Bottom">
+                    <StatusBarItem>
+                        <TextBlock Name="StatusBlock" />
+                    </StatusBarItem>
+                </StatusBar>
+                <GroupBox Margin="3" Header="_EXEMPTION_LOG">
+                    <DataGrid
+                        Name="ExemptionLogGrid"
+                        BeginningEdit="GridBeginningEdit"
+                        ColumnHeaderStyle="{DynamicResource DataGridHeaderDefaultStyle}"
+                        CommandManager.PreviewCanExecute="PreviewCanExecute"
+                        ContextMenu="{StaticResource ExemptionLogContextMenu}"
+                        DataContext="{StaticResource ExemptionLogDataSource}"
+                        InitializingNewItem="GridInitializingNewItem"
+                        ItemsSource="{Binding}"
+                        MouseDown="OnMouseDown"
+                        Style="{DynamicResource DataGridDefaultStyle}">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn
+                                x:Name="Id"
+                                Width="30"
+                                Binding="{Binding Id, Mode=OneWay}"
+                                Header="Id"
+                                IsReadOnly="True" />
+                            <DataGridTextColumn
+                                x:Name="Card"
+                                Width="200"
+                                Binding="{Binding Card}"
+                                Header="Номер карты (EPAN)" />
+                            <DataGridTextColumn
+                                x:Name="EntryTime"
+                                Width="120"
+                                Binding="{Binding EntryTime, StringFormat=G}"
+                                Header="Время въезда" />
+                            <DataGridTextColumn
+                                x:Name="EntryDevice"
+                                Width="90"
+                                Binding="{Binding EntryDevice}"
+                                Header="Устройство въезда" />
+                            <DataGridTextColumn
+                                x:Name="FacilityId"
+                                Width="70"
+                                Binding="{Binding FacilityId}"
+                                Header="Номер зоны" />
+                            <DataGridTextColumn
+                                x:Name="ParkingId"
+                                Width="70"
+                                Binding="{Binding ParkingId}"
+                                Header="Номер парковки" />
+                            <DataGridTextColumn
+                                x:Name="Session"
+                                Width="120"
+                                Binding="{Binding Session}"
+                                Header="Номер сессии" />
+                            <DataGridTextColumn
+                                x:Name="LPR"
+                                Width="90"
+                                Binding="{Binding LPR}"
+                                Header="ГРЗ" />
+                            <DataGridTextColumn
+                                x:Name="MetroCardId"
+                                Width="120"
+                                Binding="{Binding MetroCardId}"
+                                Header="Номер Тройки" />
+                            <DataGridTextColumn
+                                x:Name="ExemptionTime"
+                                Width="120"
+                                Binding="{Binding ExemptionTime, StringFormat=G, TargetNullValue={x:Static core:String.Empty}}"
+                                Header="Время скидки" />
+                            <DataGridComboBoxColumn
+                                x:Name="ExemptionResult"
+                                Width="150"
+                                Header="Результат скидки"
+                                ItemsSource="{Binding Source={StaticResource ExemptionResultEnum}}"
+                                SelectedItemBinding="{Binding ExemptionResult}" />
+                            <DataGridTextColumn
+                                x:Name="ExemptionComment"
+                                Width="150"
+                                Binding="{Binding ExemptionComment}"
+                                Header="ExemptionComment" />
+                            <DataGridTextColumn
+                                x:Name="ReportEntryTime"
+                                Width="120"
+                                Binding="{Binding ReportEntryTime, StringFormat=G}"
+                                Header="Время составления отчёта" />
+                            <DataGridComboBoxColumn
+                                x:Name="Delivered"
+                                Width="110"
+                                Header="Сообщение доставлено"
+                                ItemsSource="{Binding Source={StaticResource DeliveryStatusEnum}}"
+                                SelectedItemBinding="{Binding Delivered}" />
+                            <DataGridTextColumn
+                                x:Name="DeliveredTime"
+                                Width="120"
+                                Binding="{Binding DeliveredTime, StringFormat=G, TargetNullValue={x:Static core:String.Empty}}"
+                                Header="Время доставки на сервер отчётов" />
+                            <DataGridTextColumn
+                                x:Name="DeliverAttempt"
+                                Width="150"
+                                Binding="{Binding DeliverAttempt}"
+                                Header="Попыток доставки на сервер отчётов" />
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </GroupBox>
+            </DockPanel>
+        </Grid>
+    </Grid>
+</Window>
+

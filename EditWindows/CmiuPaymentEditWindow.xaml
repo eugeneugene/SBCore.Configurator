@@ -1,0 +1,304 @@
+﻿<Window
+    x:Class="SBCore.Configurator.EditWindows.CmiuPaymentEditWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:core="clr-namespace:System;assembly=mscorlib"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:localcode="clr-namespace:SBCore.Configurator.Code"
+    xmlns:localcommands="clr-namespace:SBCore.Configurator.Commands"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:sharedtypesais="clr-namespace:Shared.Types.AIS;assembly=Shared"
+    xmlns:sharedtypescmiu="clr-namespace:Shared.Types.CMIU;assembly=Shared"
+    Title="Список оплат"
+    Width="{Binding Source={x:Static SystemParameters.FullPrimaryScreenWidth}}"
+    Height="450"
+    x:ClassModifier="internal"
+    Closing="OnClosing"
+    ScrollViewer.CanContentScroll="True"
+    ScrollViewer.HorizontalScrollBarVisibility="Visible"
+    WindowStartupLocation="CenterScreen"
+    mc:Ignorable="d">
+    <Window.CommandBindings>
+        <CommandBinding Command="ApplicationCommands.Close" Executed="CloseCommandExecuted" />
+        <CommandBinding
+            CanExecute="AddRowCanExecute"
+            Command="localcommands:CmiuPaymentCommands.AddRowCommand"
+            Executed="AddRowExecuted" />
+        <CommandBinding
+            CanExecute="RemoveRowCanExecute"
+            Command="localcommands:CmiuPaymentCommands.RemoveRowCommand"
+            Executed="RemoveRowExecuted" />
+    </Window.CommandBindings>
+    <Window.Resources>
+        <CollectionViewSource x:Key="CmiuPaymentDataSource" CollectionViewType="ListCollectionView" />
+        <ObjectDataProvider
+            x:Key="CmiuDeviceTypeEnum"
+            MethodName="GetValues"
+            ObjectType="{x:Type core:Enum}">
+            <ObjectDataProvider.MethodParameters>
+                <x:Type Type="sharedtypescmiu:CmiuDeviceType" />
+            </ObjectDataProvider.MethodParameters>
+        </ObjectDataProvider>
+        <ObjectDataProvider
+            x:Key="CmiuPaymentTypeEnum"
+            MethodName="GetValues"
+            ObjectType="{x:Type core:Enum}">
+            <ObjectDataProvider.MethodParameters>
+                <x:Type Type="sharedtypescmiu:CmiuPaymentType" />
+            </ObjectDataProvider.MethodParameters>
+        </ObjectDataProvider>
+        <ObjectDataProvider
+            x:Key="CmiuPaymentCountEnum"
+            MethodName="GetValues"
+            ObjectType="{x:Type core:Enum}">
+            <ObjectDataProvider.MethodParameters>
+                <x:Type Type="sharedtypescmiu:CmiuPaymentCount" />
+            </ObjectDataProvider.MethodParameters>
+        </ObjectDataProvider>
+        <ObjectDataProvider
+            x:Key="CmiuPaymentMethodEnum"
+            MethodName="GetValues"
+            ObjectType="{x:Type core:Enum}">
+            <ObjectDataProvider.MethodParameters>
+                <x:Type Type="sharedtypescmiu:CmiuPaymentMethod" />
+            </ObjectDataProvider.MethodParameters>
+        </ObjectDataProvider>
+        <ObjectDataProvider
+            x:Key="AisPaymentTypeEnum"
+            MethodName="GetValues"
+            ObjectType="{x:Type core:Enum}">
+            <ObjectDataProvider.MethodParameters>
+                <x:Type Type="sharedtypesais:AisPaymentType" />
+            </ObjectDataProvider.MethodParameters>
+        </ObjectDataProvider>
+        <ObjectDataProvider
+            x:Key="AisExemptionTypeEnum"
+            MethodName="GetValues"
+            ObjectType="{x:Type core:Enum}">
+            <ObjectDataProvider.MethodParameters>
+                <x:Type Type="sharedtypesais:AisExemptionType" />
+            </ObjectDataProvider.MethodParameters>
+        </ObjectDataProvider>
+        <ObjectDataProvider
+            x:Key="CmiuCardTypeEnum"
+            MethodName="GetValues"
+            ObjectType="{x:Type core:Enum}">
+            <ObjectDataProvider.MethodParameters>
+                <x:Type Type="sharedtypescmiu:CmiuCardType" />
+            </ObjectDataProvider.MethodParameters>
+        </ObjectDataProvider>
+        <ObjectDataProvider
+            x:Key="AisParkingOperationEnum"
+            MethodName="GetValues"
+            ObjectType="{x:Type core:Enum}">
+            <ObjectDataProvider.MethodParameters>
+                <x:Type Type="sharedtypesais:AisParkingOperation" />
+            </ObjectDataProvider.MethodParameters>
+        </ObjectDataProvider>
+        <ObjectDataProvider
+            x:Key="AisSessionTypeEnum"
+            MethodName="GetValues"
+            ObjectType="{x:Type core:Enum}">
+            <ObjectDataProvider.MethodParameters>
+                <x:Type Type="sharedtypesais:AisSessionType" />
+            </ObjectDataProvider.MethodParameters>
+        </ObjectDataProvider>
+        <ObjectDataProvider
+            x:Key="AisAutoTypeEnum"
+            MethodName="GetValues"
+            ObjectType="{x:Type core:Enum}">
+            <ObjectDataProvider.MethodParameters>
+                <x:Type Type="sharedtypesais:AisAutoType" />
+            </ObjectDataProvider.MethodParameters>
+        </ObjectDataProvider>
+        <ContextMenu x:Key="CmiuPaymentContextMenu">
+            <MenuItem Command="localcommands:CmiuPaymentCommands.AddRowCommand" Header="Добавить строку" />
+            <MenuItem Command="localcommands:CmiuPaymentCommands.RemoveRowCommand" Header="Удалить строку" />
+        </ContextMenu>
+    </Window.Resources>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition MaxHeight="25" />
+            <RowDefinition />
+        </Grid.RowDefinitions>
+        <Menu
+            Grid.Row="0"
+            Height="25"
+            VerticalAlignment="Top">
+            <MenuItem Header="Окно">
+                <MenuItem Command="ApplicationCommands.Close" Header="Закрыть" />
+            </MenuItem>
+        </Menu>
+        <Grid Grid.Row="1">
+            <DockPanel>
+                <StatusBar DockPanel.Dock="Bottom">
+                    <StatusBarItem>
+                        <TextBlock Name="StatusBlock" />
+                    </StatusBarItem>
+                </StatusBar>
+                <GroupBox Margin="3" Header="_CMIUGW_PAYMENTS">
+                    <DataGrid
+                        Name="CmiuPaymentGrid"
+                        BeginningEdit="GridBeginningEdit"
+                        ColumnHeaderStyle="{DynamicResource DataGridHeaderDefaultStyle}"
+                        CommandManager.PreviewCanExecute="PreviewCanExecute"
+                        ContextMenu="{StaticResource CmiuPaymentContextMenu}"
+                        DataContext="{StaticResource CmiuPaymentDataSource}"
+                        InitializingNewItem="GridInitializingNewItem"
+                        ItemsSource="{Binding}"
+                        MouseDown="OnMouseDown"
+                        Style="{DynamicResource DataGridDefaultStyle}">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn
+                                x:Name="Id"
+                                Width="30"
+                                Binding="{Binding Id, Mode=OneWay}"
+                                Header="Id"
+                                IsReadOnly="True" />
+                            <DataGridTextColumn
+                                x:Name="CmiuDeviceNumber"
+                                Width="120"
+                                Binding="{Binding CmiuDeviceNumber}"
+                                Header="Номер устройства" />
+                            <DataGridComboBoxColumn
+                                x:Name="CmiuDeviceType"
+                                Width="105"
+                                Header="Тип устройства"
+                                ItemsSource="{Binding Source={StaticResource CmiuDeviceTypeEnum}}"
+                                SelectedItemBinding="{Binding CmiuDeviceType}" />
+                            <DataGridComboBoxColumn
+                                x:Name="CmiuPaymentMethod"
+                                Width="105"
+                                Header="Метод оплаты"
+                                ItemsSource="{Binding Source={StaticResource CmiuPaymentMethodEnum}}"
+                                SelectedItemBinding="{Binding CmiuPaymentMethod}" />
+                            <DataGridTextColumn
+                                x:Name="PaymentMethodAddition"
+                                Width="180"
+                                Binding="{Binding PaymentMethodAddition}"
+                                Header="Информация о платеже" />
+                            <DataGridTextColumn
+                                x:Name="Card"
+                                Width="180"
+                                Binding="{Binding Card}"
+                                Header="Номер карты Entervo (EPAN)" />
+                            <DataGridComboBoxColumn
+                                x:Name="CmiuCardType"
+                                Width="105"
+                                Header="Тип карты"
+                                ItemsSource="{Binding Source={StaticResource CmiuCardTypeEnum}}"
+                                SelectedItemBinding="{Binding CmiuCardType}" />
+                            <DataGridComboBoxColumn
+                                x:Name="CmiuPaymentType"
+                                Width="105"
+                                Header="Тип оплаты"
+                                ItemsSource="{Binding Source={StaticResource CmiuPaymentTypeEnum}}"
+                                SelectedItemBinding="{Binding CmiuPaymentType}" />
+                            <DataGridComboBoxColumn
+                                x:Name="CmiuPaymentCount"
+                                Width="180"
+                                Header="Первая или дополнительная оплата"
+                                ItemsSource="{Binding Source={StaticResource CmiuPaymentCountEnum}}"
+                                SelectedItemBinding="{Binding CmiuPaymentCount}" />
+                            <DataGridTextColumn
+                                x:Name="Price"
+                                Width="110"
+                                Binding="{Binding Price}"
+                                Header="Сумма" />
+                            <DataGridTextColumn
+                                x:Name="ActionUid"
+                                Width="100"
+                                Binding="{Binding ActionUid}"
+                                Header="ActionUid" />
+                            <DataGridTextColumn
+                                x:Name="TransactionUid"
+                                Width="100"
+                                Binding="{Binding TransactionUid}"
+                                Header="TransactionUid" />
+                            <DataGridTextColumn
+                                x:Name="DateEvent"
+                                Width="120"
+                                Binding="{Binding DateEvent, StringFormat=G}"
+                                Header="Дата события" />
+                            <DataGridCheckBoxColumn
+                                x:Name="EppSession"
+                                Width="120"
+                                Binding="{Binding EppSession, StringFormat=G}"
+                                Header="Данные сессии АИС ЕПП" />
+                            <DataGridComboBoxColumn
+                                x:Name="Operation"
+                                Width="110"
+                                Header="Наименование операции"
+                                SelectedItemBinding="{Binding Operation, Converter={x:Static localcode:NullableEnumConverter.Instance}, ConverterParameter={x:Static sharedtypesais:AisParkingOperation.ParkingStart}}">
+                                <DataGridComboBoxColumn.ItemsSource>
+                                    <CompositeCollection>
+                                        <x:Static Member="localcode:NullableEnumConverter.NullComboStringValue" />
+                                        <CollectionContainer Collection="{Binding Source={StaticResource AisParkingOperationEnum}}" />
+                                    </CompositeCollection>
+                                </DataGridComboBoxColumn.ItemsSource>
+                            </DataGridComboBoxColumn>
+                            <DataGridComboBoxColumn
+                                x:Name="AisSessionType"
+                                Width="110"
+                                Header="Тип сессии"
+                                SelectedItemBinding="{Binding AisSessionType, Converter={x:Static localcode:NullableEnumConverter.Instance}, ConverterParameter={x:Static sharedtypesais:AisSessionType.Transaction}}">
+                                <DataGridComboBoxColumn.ItemsSource>
+                                    <CompositeCollection>
+                                        <x:Static Member="localcode:NullableEnumConverter.NullComboStringValue" />
+                                        <CollectionContainer Collection="{Binding Source={StaticResource AisSessionTypeEnum}}" />
+                                    </CompositeCollection>
+                                </DataGridComboBoxColumn.ItemsSource>
+                            </DataGridComboBoxColumn>
+                            <DataGridComboBoxColumn
+                                x:Name="AisAutoType"
+                                Width="110"
+                                Header="Тип сессии"
+                                SelectedItemBinding="{Binding AisAutoType, Converter={x:Static localcode:NullableEnumConverter.Instance}, ConverterParameter={x:Static sharedtypesais:AisAutoType.Auto}}">
+                                <DataGridComboBoxColumn.ItemsSource>
+                                    <CompositeCollection>
+                                        <x:Static Member="localcode:NullableEnumConverter.NullComboStringValue" />
+                                        <CollectionContainer Collection="{Binding Source={StaticResource AisAutoTypeEnum}}" />
+                                    </CompositeCollection>
+                                </DataGridComboBoxColumn.ItemsSource>
+                            </DataGridComboBoxColumn>
+                            <DataGridComboBoxColumn
+                                x:Name="AisPaymentType"
+                                Width="110"
+                                Header="Тип платежа"
+                                SelectedItemBinding="{Binding AisPaymentType, Converter={x:Static localcode:NullableEnumConverter.Instance}, ConverterParameter={x:Static sharedtypesais:AisPaymentType.Cash}}">
+                                <DataGridComboBoxColumn.ItemsSource>
+                                    <CompositeCollection>
+                                        <x:Static Member="localcode:NullableEnumConverter.NullComboStringValue" />
+                                        <CollectionContainer Collection="{Binding Source={StaticResource AisPaymentTypeEnum}}" />
+                                    </CompositeCollection>
+                                </DataGridComboBoxColumn.ItemsSource>
+                            </DataGridComboBoxColumn>
+                            <DataGridComboBoxColumn
+                                x:Name="AisExemptionType"
+                                Width="120"
+                                Header="Тип льготы"
+                                SelectedItemBinding="{Binding AisExemptionType, Converter={x:Static localcode:NullableEnumConverter.Instance}, ConverterParameter={x:Static sharedtypesais:AisExemptionType.rzd}}">
+                                <DataGridComboBoxColumn.ItemsSource>
+                                    <CompositeCollection>
+                                        <x:Static Member="localcode:NullableEnumConverter.NullComboStringValue" />
+                                        <CollectionContainer Collection="{Binding Source={StaticResource AisExemptionTypeEnum}}" />
+                                    </CompositeCollection>
+                                </DataGridComboBoxColumn.ItemsSource>
+                            </DataGridComboBoxColumn>
+                            <DataGridTextColumn
+                                x:Name="FineCost"
+                                Width="130"
+                                Binding="{Binding FineCost, TargetNullValue={x:Static core:String.Empty}}"
+                                Header="Начисленная сумма штрафа" />
+                            <DataGridTextColumn
+                                x:Name="FinePaid"
+                                Width="130"
+                                Binding="{Binding FinePaid, TargetNullValue={x:Static core:String.Empty}}"
+                                Header="Сумма оплаченного штрафа" />
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </GroupBox>
+            </DockPanel>
+        </Grid>
+    </Grid>
+</Window>

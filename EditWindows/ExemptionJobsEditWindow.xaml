@@ -1,0 +1,270 @@
+﻿<Window
+    x:Class="SBCore.Configurator.EditWindows.ExemptionJobsEditWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:core="clr-namespace:System;assembly=mscorlib"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:localcode="clr-namespace:SBCore.Configurator.Code"
+    xmlns:localcommands="clr-namespace:SBCore.Configurator.Commands"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:sbsharedtypes="clr-namespace:SBShared.Types;assembly=SBShared"
+    xmlns:sbsharedtypesentervooanew="clr-namespace:SBShared.Types.EntervoOA.New;assembly=SBShared"
+    xmlns:sharedtypesasop="clr-namespace:Shared.Types.ASOP;assembly=Shared"
+    Title="Задания Online Authorization"
+    Width="{Binding Source={x:Static SystemParameters.FullPrimaryScreenWidth}}"
+    Height="450"
+    x:ClassModifier="internal"
+    Closing="OnClosing"
+    ScrollViewer.CanContentScroll="True"
+    ScrollViewer.HorizontalScrollBarVisibility="Visible"
+    WindowStartupLocation="CenterScreen"
+    mc:Ignorable="d">
+    <Window.CommandBindings>
+        <CommandBinding Command="ApplicationCommands.Close" Executed="CloseCommandExecuted" />
+        <CommandBinding
+            CanExecute="AddRowCanExecute"
+            Command="localcommands:ExemptionJobsCommands.AddRowCommand"
+            Executed="AddRowExecuted" />
+        <CommandBinding
+            CanExecute="RemoveRowCanExecute"
+            Command="localcommands:ExemptionJobsCommands.RemoveRowCommand"
+            Executed="RemoveRowExecuted" />
+    </Window.CommandBindings>
+    <Window.Resources>
+        <ContextMenu x:Key="OAJobContextMenu">
+            <MenuItem Command="localcommands:ExemptionJobsCommands.AddRowCommand" Header="Добавить строку" />
+            <MenuItem Command="localcommands:ExemptionJobsCommands.RemoveRowCommand" Header="Удалить строку" />
+        </ContextMenu>
+        <CollectionViewSource x:Key="OAJobDataSource" CollectionViewType="ListCollectionView" />
+        <ObjectDataProvider
+            x:Key="JobTypeEnum"
+            MethodName="GetValues"
+            ObjectType="{x:Type core:Enum}">
+            <ObjectDataProvider.MethodParameters>
+                <x:Type Type="sbsharedtypesentervooanew:JobType" />
+            </ObjectDataProvider.MethodParameters>
+        </ObjectDataProvider>
+        <ObjectDataProvider
+            x:Key="DeviceTypeEnum"
+            MethodName="GetValues"
+            ObjectType="{x:Type core:Enum}">
+            <ObjectDataProvider.MethodParameters>
+                <x:Type Type="sbsharedtypesentervooanew:DeviceType" />
+            </ObjectDataProvider.MethodParameters>
+        </ObjectDataProvider>
+        <ObjectDataProvider
+            x:Key="MediaTypeEnum"
+            MethodName="GetValues"
+            ObjectType="{x:Type core:Enum}">
+            <ObjectDataProvider.MethodParameters>
+                <x:Type Type="sbsharedtypesentervooanew:MediaType" />
+            </ObjectDataProvider.MethodParameters>
+        </ObjectDataProvider>
+        <ObjectDataProvider
+            x:Key="ExemptionResultEnum"
+            MethodName="GetValues"
+            ObjectType="{x:Type core:Enum}">
+            <ObjectDataProvider.MethodParameters>
+                <x:Type Type="sharedtypesasop:ExemptionResult" />
+            </ObjectDataProvider.MethodParameters>
+        </ObjectDataProvider>
+        <ObjectDataProvider
+            x:Key="JobStatusEnum"
+            MethodName="GetValues"
+            ObjectType="{x:Type core:Enum}">
+            <ObjectDataProvider.MethodParameters>
+                <x:Type Type="sbsharedtypes:JobStatus" />
+            </ObjectDataProvider.MethodParameters>
+        </ObjectDataProvider>
+    </Window.Resources>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition MaxHeight="25" />
+            <RowDefinition />
+        </Grid.RowDefinitions>
+        <Menu
+            Grid.Row="0"
+            Height="25"
+            VerticalAlignment="Top">
+            <MenuItem Header="Окно">
+                <MenuItem Command="ApplicationCommands.Close" Header="Закрыть" />
+            </MenuItem>
+        </Menu>
+        <Grid Grid.Row="1">
+            <DockPanel>
+                <StatusBar DockPanel.Dock="Bottom">
+                    <StatusBarItem>
+                        <TextBlock Name="StatusBlock" />
+                    </StatusBarItem>
+                </StatusBar>
+                <GroupBox Margin="3" Header="_EXEMPTION_JOBS">
+                    <DataGrid
+                        Name="OAJobGrid"
+                        BeginningEdit="GridBeginningEdit"
+                        ColumnHeaderStyle="{DynamicResource DataGridHeaderDefaultStyle}"
+                        CommandManager.PreviewCanExecute="PreviewCanExecute"
+                        ContextMenu="{StaticResource OAJobContextMenu}"
+                        DataContext="{StaticResource OAJobDataSource}"
+                        InitializingNewItem="GridInitializingNewItem"
+                        ItemsSource="{Binding}"
+                        MouseDown="OnMouseDown"
+                        Style="{DynamicResource DataGridDefaultStyle}">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn
+                                x:Name="Id"
+                                Width="30"
+                                Binding="{Binding Id, Mode=OneWay}"
+                                Header="Id"
+                                IsReadOnly="True" />
+                            <DataGridTextColumn
+                                x:Name="JobId"
+                                Width="60"
+                                Binding="{Binding JobId}"
+                                Header="JobId" />
+                            <DataGridComboBoxColumn
+                                x:Name="JobType"
+                                Width="110"
+                                Header="Тип задания"
+                                ItemsSource="{Binding Source={StaticResource JobTypeEnum}}"
+                                SelectedItemBinding="{Binding JobType}" />
+                            <DataGridTextColumn
+                                x:Name="FacilityNumber"
+                                Width="70"
+                                Binding="{Binding FacilityNumber}"
+                                Header="Facility" />
+                            <DataGridTextColumn
+                                x:Name="ComputerNumber"
+                                Width="70"
+                                Binding="{Binding ComputerNumber}"
+                                Header="Computer" />
+                            <DataGridTextColumn
+                                x:Name="OperatorNumber"
+                                Width="70"
+                                Binding="{Binding OperatorNumber}"
+                                Header="Operator" />
+                            <DataGridComboBoxColumn
+                                x:Name="DeviceType"
+                                Width="105"
+                                Header="Тип устройства"
+                                SelectedItemBinding="{Binding DeviceType, Converter={x:Static localcode:NullableEnumConverter.Instance}, ConverterParameter={x:Static sbsharedtypesentervooanew:DeviceType.DOORREADER}}">
+                                <DataGridComboBoxColumn.ItemsSource>
+                                    <CompositeCollection>
+                                        <x:Static Member="localcode:NullableEnumConverter.NullComboStringValue" />
+                                        <CollectionContainer Collection="{Binding Source={StaticResource DeviceTypeEnum}}" />
+                                    </CompositeCollection>
+                                </DataGridComboBoxColumn.ItemsSource>
+                            </DataGridComboBoxColumn>
+                            <DataGridTextColumn
+                                x:Name="DeviceNumber"
+                                Width="90"
+                                Binding="{Binding DeviceNumber}"
+                                Header="Номер устройства" />
+                            <DataGridTextColumn
+                                x:Name="ProviderId"
+                                Width="120"
+                                Binding="{Binding ProviderId}"
+                                Header="Идентификатор провайдера" />
+                            <DataGridComboBoxColumn
+                                x:Name="MediaType"
+                                Width="105"
+                                Header="Тип носителя"
+                                SelectedItemBinding="{Binding MediaType, Converter={x:Static localcode:NullableEnumConverter.Instance}, ConverterParameter={x:Static sbsharedtypesentervooanew:MediaType.LICENSE_PLATE}}">
+                                <DataGridComboBoxColumn.ItemsSource>
+                                    <CompositeCollection>
+                                        <x:Static Member="localcode:NullableEnumConverter.NullComboStringValue" />
+                                        <CollectionContainer Collection="{Binding Source={StaticResource MediaTypeEnum}}" />
+                                    </CompositeCollection>
+                                </DataGridComboBoxColumn.ItemsSource>
+                            </DataGridComboBoxColumn>
+                            <DataGridTextColumn
+                                x:Name="MediaName"
+                                Width="120"
+                                Binding="{Binding MediaName}"
+                                Header="Имя носителя" />
+                            <DataGridTextColumn
+                                x:Name="EPAN"
+                                Width="200"
+                                Binding="{Binding EPAN}"
+                                Header="Номер карты (EPAN)" />
+                            <DataGridTextColumn
+                                x:Name="Troyka"
+                                Width="120"
+                                Binding="{Binding Troyka}"
+                                Header="Номер Тройки" />
+                            <DataGridTextColumn
+                                x:Name="EntryTime"
+                                Width="120"
+                                Binding="{Binding EntryTime, StringFormat=G, TargetNullValue={x:Static core:String.Empty}}"
+                                Header="Время въезда" />
+                            <DataGridCheckBoxColumn
+                                x:Name="LeaveLoopIn"
+                                Width="120"
+                                Binding="{Binding LeaveLoopIn}"
+                                Header="Покинул петлю I"
+                                IsThreeState="True" />
+                            <DataGridCheckBoxColumn
+                                x:Name="LeaveLoopOut"
+                                Width="120"
+                                Binding="{Binding LeaveLoopOut}"
+                                Header="Покинул петлю II"
+                                IsThreeState="True" />
+                            <DataGridTextColumn
+                                x:Name="OriginalAmount"
+                                Width="90"
+                                Binding="{Binding OriginalAmount, TargetNullValue={x:Static core:String.Empty}}"
+                                Header="Начальная сумма" />
+                            <DataGridTextColumn
+                                x:Name="RemainingAmount"
+                                Width="90"
+                                Binding="{Binding RemainingAmount, TargetNullValue={x:Static core:String.Empty}}"
+                                Header="Остаточная сумма" />
+                            <DataGridTextColumn
+                                x:Name="LPR"
+                                Width="90"
+                                Binding="{Binding LPR}"
+                                Header="ГРЗ" />
+                            <DataGridTextColumn
+                                x:Name="ExemptionTime"
+                                Width="120"
+                                Binding="{Binding ExemptionTime, StringFormat=G, TargetNullValue={x:Static core:String.Empty}}"
+                                Header="Время скидки" />
+                            <DataGridComboBoxColumn
+                                x:Name="ExemptionResult"
+                                Width="150"
+                                Header="Результат скидки"
+                                SelectedItemBinding="{Binding ExemptionResult, Converter={x:Static localcode:NullableEnumConverter.Instance}, ConverterParameter={x:Static sharedtypesasop:ExemptionResult.ExemptionOK}}">
+                                <DataGridComboBoxColumn.ItemsSource>
+                                    <CompositeCollection>
+                                        <x:Static Member="localcode:NullableEnumConverter.NullComboStringValue" />
+                                        <CollectionContainer Collection="{Binding Source={StaticResource ExemptionResultEnum}}" />
+                                    </CompositeCollection>
+                                </DataGridComboBoxColumn.ItemsSource>
+                            </DataGridComboBoxColumn>
+                            <DataGridTextColumn
+                                x:Name="ExemptionComment"
+                                Width="150"
+                                Binding="{Binding ExemptionComment}"
+                                Header="ExemptionComment" />
+                            <DataGridTextColumn
+                                x:Name="TransactionTimeStamp"
+                                Width="120"
+                                Binding="{Binding TransactionTimeStamp, StringFormat=G}"
+                                Header="Время транзакции" />
+                            <DataGridComboBoxColumn
+                                x:Name="JobStatus"
+                                Width="120"
+                                Header="Статус задания"
+                                ItemsSource="{Binding Source={StaticResource JobStatusEnum}}"
+                                SelectedItemBinding="{Binding JobStatus}" />
+                            <DataGridTextColumn
+                                x:Name="JobStatusTimeStamp"
+                                Width="120"
+                                Binding="{Binding JobStatusTimeStamp, StringFormat=G}"
+                                Header="Время статуса" />
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </GroupBox>
+            </DockPanel>
+        </Grid>
+    </Grid>
+</Window>

@@ -1,0 +1,100 @@
+﻿<Window
+    x:Class="SBCore.Configurator.EditWindows.CmiuPlacesUrlEditWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:localcode="clr-namespace:SBCore.Configurator.Code"
+    xmlns:localcommands="clr-namespace:SBCore.Configurator.Commands"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:sharedtypescmiu="clr-namespace:Shared.Types.CMIU;assembly=Shared"
+    Title="Отправка мест"
+    Width="502"
+    Height="400"
+    x:ClassModifier="internal"
+    Closing="OnClosing"
+    mc:Ignorable="d">
+    <Window.CommandBindings>
+        <CommandBinding Command="ApplicationCommands.Close" Executed="CloseCommandExecuted" />
+        <CommandBinding
+            CanExecute="AddRowCanExecute"
+            Command="localcommands:CmiuPlacesUrlCommands.AddRowCommand"
+            Executed="AddRowExecuted" />
+        <CommandBinding
+            CanExecute="RemoveRowCanExecute"
+            Command="localcommands:CmiuPlacesUrlCommands.RemoveRowCommand"
+            Executed="RemoveRowExecuted" />
+    </Window.CommandBindings>
+    <Window.Resources>
+        <CollectionViewSource x:Key="CmiuPlacesUrlDataSource" CollectionViewType="ListCollectionView" />
+        <localcode:UriConverter x:Key="UriConverter" />
+        <ObjectDataProvider
+            x:Key="PlacesProtocolSmartEnum"
+            MethodName="GetValues"
+            ObjectType="{x:Type sharedtypescmiu:PlacesProtocol}" />
+        <ContextMenu x:Key="CmiuPlacesUrlContextMenu">
+            <MenuItem Command="localcommands:CmiuPlacesUrlCommands.AddRowCommand" Header="Добавить строку" />
+            <MenuItem Command="localcommands:CmiuPlacesUrlCommands.RemoveRowCommand" Header="Удалить строку" />
+        </ContextMenu>
+    </Window.Resources>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition MaxHeight="25" />
+            <RowDefinition />
+        </Grid.RowDefinitions>
+        <Menu
+            Grid.Row="0"
+            Height="25"
+            VerticalAlignment="Top">
+            <MenuItem Header="Окно">
+                <MenuItem Command="ApplicationCommands.Close" Header="Закрыть" />
+            </MenuItem>
+        </Menu>
+        <Grid Grid.Row="1">
+            <DockPanel>
+                <StatusBar DockPanel.Dock="Bottom">
+                    <StatusBarItem>
+                        <TextBlock Name="StatusBlock" />
+                    </StatusBarItem>
+                </StatusBar>
+                <GroupBox Margin="3" Header="_CMIUGW_PLACES_URLS_MAP">
+                    <DataGrid
+                        Name="CmiuPlacesUrlGrid"
+                        BeginningEdit="GridBeginningEdit"
+                        ColumnHeaderStyle="{DynamicResource DataGridHeaderDefaultStyle}"
+                        CommandManager.PreviewCanExecute="PreviewCanExecute"
+                        ContextMenu="{StaticResource CmiuPlacesUrlContextMenu}"
+                        DataContext="{StaticResource CmiuPlacesUrlDataSource}"
+                        InitializingNewItem="GridInitializingNewItem"
+                        ItemsSource="{Binding}"
+                        MouseDown="OnMouseDown"
+                        Style="{DynamicResource DataGridDefaultStyle}">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn
+                                x:Name="Id"
+                                Width="30"
+                                Binding="{Binding Id, Mode=OneWay}"
+                                Header="Id"
+                                IsReadOnly="True" />
+                            <DataGridTextColumn
+                                x:Name="CmiuParkingNumber"
+                                Width="120"
+                                Binding="{Binding CmiuParkingNumber}"
+                                Header="Номер парковки ЦМИУ" />
+                            <DataGridHyperlinkColumn
+                                x:Name="Url"
+                                Width="150"
+                                Binding="{Binding Url, Converter={StaticResource UriConverter}}"
+                                Header="Url" />
+                            <DataGridComboBoxColumn
+                                x:Name="PlacesProtocol"
+                                Width="150"
+                                Header="Протокол отправки"
+                                ItemsSource="{Binding Source={StaticResource PlacesProtocolSmartEnum}}"
+                                SelectedItemBinding="{Binding Protocol}" />
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </GroupBox>
+            </DockPanel>
+        </Grid>
+    </Grid>
+</Window>

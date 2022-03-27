@@ -1,0 +1,212 @@
+﻿<Window
+    x:Class="SBCore.Configurator.DbAnalyze"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:i="clr-namespace:Microsoft.Xaml.Behaviors;assembly=Microsoft.Xaml.Behaviors"
+    xmlns:localcode="clr-namespace:SBCore.Configurator.Code"
+    xmlns:localcommands="clr-namespace:SBCore.Configurator.Commands"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    Title="Состояние таблиц"
+    Width="800"
+    Height="644"
+    x:ClassModifier="internal"
+    Closed="WindowClosed"
+    Loaded="WindowLoaded"
+    mc:Ignorable="d">
+    <Window.CommandBindings>
+        <CommandBinding
+            CanExecute="EditTableCanExecute"
+            Command="localcommands:DbAnalyzeCommands.EditTableCommand"
+            Executed="EditTableExecuted" />
+        <CommandBinding
+            CanExecute="RecreateTableCanExecute"
+            Command="localcommands:DbAnalyzeCommands.RecreateTableCommand"
+            Executed="RecreateTableExecuted" />
+        <CommandBinding
+            CanExecute="PurgeTableCanExecute"
+            Command="localcommands:DbAnalyzeCommands.PurgeTableCommand"
+            Executed="PurgeTableExecuted" />
+        <CommandBinding
+            CanExecute="RecreateTablesCanExecute"
+            Command="localcommands:DbAnalyzeCommands.RecreateTablesCommand"
+            Executed="RecreateTablesExecuted" />
+        <CommandBinding
+            CanExecute="RecreateBrokenTablesCanExecute"
+            Command="localcommands:DbAnalyzeCommands.RecreateBrokenTablesCommand"
+            Executed="RecreateBrokenTablesExecuted" />
+        <CommandBinding
+            CanExecute="PurgeTablesCanExecute"
+            Command="localcommands:DbAnalyzeCommands.PurgeTablesCommand"
+            Executed="PurgeTablesExecuted" />
+        <CommandBinding
+            CanExecute="StatusDetailsCanExecute"
+            Command="localcommands:DbAnalyzeCommands.StatusDetailsCommand"
+            Executed="StatusDetailsExecuted" />
+        <CommandBinding Command="ApplicationCommands.Close" Executed="CloseCommandHandler" />
+    </Window.CommandBindings>
+    <Window.Resources>
+        <CollectionViewSource x:Key="ItemCollectionViewSource" CollectionViewType="ListCollectionView" />
+        <Style x:Key="ContextMenuStyle" TargetType="ContextMenu">
+            <Setter Property="HorizontalContentAlignment" Value="Left" />
+            <Setter Property="VerticalContentAlignment" Value="Center" />
+        </Style>
+        <Style x:Key="MenuItemStyle" TargetType="MenuItem">
+            <Setter Property="HorizontalContentAlignment" Value="Left" />
+            <Setter Property="VerticalContentAlignment" Value="Center" />
+        </Style>
+        <ContextMenu x:Key="gridContextMenu" Style="{StaticResource ContextMenuStyle}">
+            <MenuItem
+                Command="localcommands:DbAnalyzeCommands.EditTableCommand"
+                Header="Редактировать"
+                Style="{StaticResource MenuItemStyle}" />
+            <Separator />
+            <MenuItem
+                Command="localcommands:DbAnalyzeCommands.RecreateTableCommand"
+                Header="Пересоздать"
+                Style="{StaticResource MenuItemStyle}" />
+            <MenuItem
+                Command="localcommands:DbAnalyzeCommands.PurgeTableCommand"
+                Header="Очистить"
+                Style="{StaticResource MenuItemStyle}" />
+        </ContextMenu>
+        <localcode:AuthConverter x:Key="DetailsVisibleConverter" />
+    </Window.Resources>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition MaxHeight="25" />
+            <RowDefinition />
+        </Grid.RowDefinitions>
+        <Menu
+            Grid.Row="0"
+            Height="25"
+            VerticalAlignment="Top">
+            <MenuItem Header="Окно">
+                <MenuItem Command="ApplicationCommands.Close" Header="Закрыть" />
+            </MenuItem>
+            <MenuItem Header="Таблица">
+                <MenuItem
+                    Command="localcommands:DbAnalyzeCommands.EditTableCommand"
+                    Header="Редактировать"
+                    Style="{StaticResource MenuItemStyle}" />
+                <Separator />
+                <MenuItem
+                    Command="localcommands:DbAnalyzeCommands.RecreateTableCommand"
+                    Header="Пересоздать"
+                    Style="{StaticResource MenuItemStyle}" />
+                <MenuItem
+                    Command="localcommands:DbAnalyzeCommands.PurgeTableCommand"
+                    Header="Очистить"
+                    Style="{StaticResource MenuItemStyle}" />
+            </MenuItem>
+            <MenuItem Header="Обслуживание">
+                <MenuItem
+                    Command="localcommands:DbAnalyzeCommands.RecreateTablesCommand"
+                    Header="Пересоздать все таблицы"
+                    Style="{StaticResource MenuItemStyle}" />
+                <MenuItem
+                    Command="localcommands:DbAnalyzeCommands.RecreateBrokenTablesCommand"
+                    Header="Пересоздать неисправные таблицы"
+                    Style="{StaticResource MenuItemStyle}" />
+                <MenuItem
+                    Command="localcommands:DbAnalyzeCommands.PurgeTablesCommand"
+                    Header="Очистить таблицы"
+                    Style="{StaticResource MenuItemStyle}" />
+            </MenuItem>
+        </Menu>
+        <Grid Grid.Row="1">
+            <DockPanel>
+                <StatusBar DockPanel.Dock="Bottom">
+                    <StatusBarItem>
+                        <TextBlock Name="StatusBlock" />
+                    </StatusBarItem>
+                </StatusBar>
+                <GroupBox Margin="3" Header="Состояние таблиц">
+                    <DataGrid
+                        x:Name="dbStatusGrid"
+                        Margin="5"
+                        AutoGenerateColumns="False"
+                        CanUserAddRows="False"
+                        CanUserDeleteRows="False"
+                        CanUserResizeColumns="False"
+                        CanUserResizeRows="False"
+                        CanUserSortColumns="False"
+                        ContextMenu="{StaticResource ResourceKey=gridContextMenu}"
+                        DataContext="{StaticResource ItemCollectionViewSource}"
+                        ItemsSource="{Binding}"
+                        ScrollViewer.HorizontalScrollBarVisibility="Hidden">
+                        <i:Interaction.Triggers>
+                            <i:EventTrigger EventName="MouseDoubleClick">
+                                <i:InvokeCommandAction Command="localcommands:DbAnalyzeCommands.EditTableCommand" />
+                            </i:EventTrigger>
+                        </i:Interaction.Triggers>
+                        <DataGrid.Columns>
+                            <DataGridTemplateColumn
+                                Width="240"
+                                Header="Имя таблицы"
+                                IsReadOnly="True">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="{Binding Path=TableName, Mode=OneWay}">
+                                            <TextBlock.Style>
+                                                <Style TargetType="TextBlock">
+                                                    <Setter Property="FontWeight" Value="Normal" />
+                                                    <Style.Triggers>
+                                                        <DataTrigger Binding="{Binding Path=UserFilled, Mode=OneWay}" Value="true">
+                                                            <Setter Property="FontWeight" Value="Bold" />
+                                                        </DataTrigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                            </TextBlock.Style>
+                                        </TextBlock>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                            <DataGridTemplateColumn
+                                Width="120"
+                                Header="Состояние таблицы"
+                                IsReadOnly="True">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <TextBlock HorizontalAlignment="Center">
+                                            <TextBlock.Style>
+                                                <Style TargetType="TextBlock">
+                                                    <Setter Property="Text" Value="ОШИБКА" />
+                                                    <Setter Property="Foreground" Value="Red" />
+                                                    <Style.Triggers>
+                                                        <DataTrigger Binding="{Binding Path=Status, Mode=OneWay}" Value="0">
+                                                            <Setter Property="Text" Value="Норма" />
+                                                            <Setter Property="Foreground" Value="Green" />
+                                                        </DataTrigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                            </TextBlock.Style>
+                                        </TextBlock>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                            <DataGridTemplateColumn
+                                Width="*"
+                                Header="Комментарий"
+                                IsReadOnly="True">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <StackPanel Orientation="Horizontal">
+                                            <TextBlock Text="{Binding Path=Comment, Mode=OneWay}" />
+                                            <TextBlock Visibility="{Binding Path=Details, Converter={StaticResource DetailsVisibleConverter}}">
+                                                <Hyperlink
+                                                    Command="localcommands:DbAnalyzeCommands.StatusDetailsCommand"
+                                                    CommandParameter="{Binding Path=TableName}"
+                                                    NavigateUri="Подробнее" />
+                                            </TextBlock>
+                                        </StackPanel>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </GroupBox>
+            </DockPanel>
+        </Grid>
+    </Grid>
+</Window>

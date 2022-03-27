@@ -1,0 +1,92 @@
+﻿<Window
+    x:Class="SBCore.Configurator.EditWindows.ExemptionParkingEditWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:localcommands="clr-namespace:SBCore.Configurator.Commands"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    Title="Карта парковок АСОП Метро"
+    Width="622"
+    Height="450"
+    x:ClassModifier="internal"
+    Closing="OnClosing"
+    mc:Ignorable="d">
+    <Window.CommandBindings>
+        <CommandBinding Command="ApplicationCommands.Close" Executed="CloseCommandExecuted" />
+        <CommandBinding
+            CanExecute="AddRowCanExecute"
+            Command="localcommands:ExemptionParkingCommands.AddRowCommand"
+            Executed="AddRowExecuted" />
+        <CommandBinding
+            CanExecute="RemoveRowCanExecute"
+            Command="localcommands:ExemptionParkingCommands.RemoveRowCommand"
+            Executed="RemoveRowExecuted" />
+    </Window.CommandBindings>
+    <Window.Resources>
+        <ContextMenu x:Key="ExemptionParkingContextMenu">
+            <MenuItem Command="localcommands:ExemptionParkingCommands.AddRowCommand" Header="Добавить строку" />
+            <MenuItem Command="localcommands:ExemptionParkingCommands.RemoveRowCommand" Header="Удалить строку" />
+        </ContextMenu>
+        <CollectionViewSource x:Key="ExemptionParkingDataSource" CollectionViewType="ListCollectionView" />
+    </Window.Resources>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition MaxHeight="25" />
+            <RowDefinition />
+        </Grid.RowDefinitions>
+        <Menu
+            Grid.Row="0"
+            Height="25"
+            VerticalAlignment="Top">
+            <MenuItem Header="Окно">
+                <MenuItem Command="ApplicationCommands.Close" Header="Закрыть" />
+            </MenuItem>
+        </Menu>
+        <Grid Grid.Row="1">
+            <DockPanel>
+                <StatusBar DockPanel.Dock="Bottom">
+                    <StatusBarItem>
+                        <TextBlock Name="StatusBlock" />
+                    </StatusBarItem>
+                </StatusBar>
+                <GroupBox Margin="3" Header="_EXEMPTION_PARKING">
+                    <DataGrid
+                        Name="MetroMapGrid"
+                        BeginningEdit="GridBeginningEdit"
+                        ColumnHeaderStyle="{DynamicResource DataGridHeaderDefaultStyle}"
+                        CommandManager.PreviewCanExecute="PreviewCanExecute"
+                        ContextMenu="{StaticResource ExemptionParkingContextMenu}"
+                        DataContext="{StaticResource ExemptionParkingDataSource}"
+                        InitializingNewItem="GridInitializingNewItem"
+                        ItemsSource="{Binding}"
+                        MouseDown="OnMouseDown"
+                        Style="{DynamicResource DataGridDefaultStyle}">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn
+                                x:Name="Id"
+                                Width="30"
+                                Binding="{Binding Id, Mode=OneWay}"
+                                Header="Id"
+                                IsReadOnly="True" />
+                            <DataGridTextColumn
+                                x:Name="FacilityId"
+                                Width="180"
+                                Binding="{Binding FacilityId}"
+                                Header="FacilityId" />
+                            <DataGridTextColumn
+                                x:Name="ComputerNumber"
+                                Width="180"
+                                Binding="{Binding ComputerNumber}"
+                                Header="ComputerNumber" />
+                            <DataGridTextColumn
+                                x:Name="MetroParkingId"
+                                Width="180"
+                                Binding="{Binding MetroParkingId}"
+                                Header="Номер парковки в системе АСОП Метро" />
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </GroupBox>
+            </DockPanel>
+        </Grid>
+    </Grid>
+</Window>
